@@ -184,7 +184,7 @@ public class ProcessaPessoa extends HttpServlet {
 		//LISTAR PESSOA//
 		else if(acao.equals("listarPessoa")) {
 			try {
-				List<Pessoa> listaPessoas = pDao.listarTodosUsuarios();
+				List<Pessoa> listaPessoas = pDao.listarNaoVerificados();
 				for (Pessoa p : listaPessoas) {
 					obj = new JSONObject();
 					obj.put("cod_pessoa", p.getCod_pessoa());

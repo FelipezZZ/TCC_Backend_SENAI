@@ -95,10 +95,10 @@ public class PessoaDao {
 		return ps.executeUpdate() > 0;
 	}
 	
-				//LISTA Pessoas
+	//LISTA Pessoas
 	public List<Pessoa> listarTodosUsuarios() throws SQLException{
 		
-	String sql = "SELECT * FROM pessoa WHERE tipoperfil = '1' ";
+	String sql = "SELECT * FROM pessoa";
 		
 	con = ConnectionDB.getConnection();
 		
@@ -120,7 +120,34 @@ public class PessoaDao {
 		}
 		
 		return pessoas;
-	}		
+	}
+	
+	//LISTA Pessoas não verificadas
+	public List<Pessoa> listarNaoVerificados() throws SQLException{
+		
+	String sql = "SELECT * FROM pessoa WHERE tipoperfil='1' and verificado = 0 ";
+		
+	con = ConnectionDB.getConnection();
+		
+		ps = con.prepareStatement(sql);
+		
+		List<Pessoa> pessoas = new ArrayList<>();
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Pessoa p = new Pessoa();
+			p.setCod_pessoa(rs.getInt("cod_pessoa"));
+			p.setIdentidade(rs.getString("ident"));
+			p.setLogin(rs.getString("login"));
+			p.setNickname(rs.getString("nickname"));
+			p.setSenha(rs.getString("senha"));
+			p.setVerificado(rs.getBoolean("verificado"));
+			p.setTipoPerf(rs.getInt("tipoperfil"));
+			
+			pessoas.add(p);
+		}
+		
+		return pessoas;
+	}	
 				
 				
 	
@@ -173,10 +200,10 @@ public class PessoaDao {
 
 	
 	
-				//ELEMENTO EXCLUSIVO DE USUARIOS PSICOLOGOS,O USUARIO DEVE ESTAR VERIFICADO ANTES DE PODER
-				//AGIR COMO PSICOLOGO NO APP
+	//ELEMENTO EXCLUSIVO DE USUARIOS PSICOLOGOS,O USUARIO DEVE ESTAR VERIFICADO ANTES DE PODER
+	//AGIR COMO PSICOLOGO NO APP
 	public boolean verificaPessoa(int i) throws SQLException {	
-		String sql = " UPDATE pessoa SET verificado='true' WHERE cod_pessoa = ?";
+		String sql = " UPDATE pessoa SET verificado=true WHERE cod_pessoa = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		
