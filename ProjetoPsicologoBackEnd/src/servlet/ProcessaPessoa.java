@@ -182,7 +182,7 @@ public class ProcessaPessoa extends HttpServlet {
 		}
 		
 		//LISTAR PESSOA//
-		else if(acao.equals("listarPessoa")) {
+		else if(acao.equals("listarNaoVerificados")) {
 			try {
 				List<Pessoa> listaPessoas = pDao.listarNaoVerificados();
 				for (Pessoa p : listaPessoas) {
@@ -195,7 +195,6 @@ public class ProcessaPessoa extends HttpServlet {
 					out.print(obj.toString()+"\n");
 				}
 			} catch (SQLException e) {
-			
 				e.printStackTrace();
 			}
 		}		
@@ -263,10 +262,6 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-			
-			
-		out.print(obj.toString());
-	
 
 		}
 }
