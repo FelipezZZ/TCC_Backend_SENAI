@@ -20,12 +20,15 @@ senha varchar(50) not null
 
 );
 
-create table perfps(
+create table perfis(
  cod_pessoa integer not null,
  constraint fkCod_pessoa foreign key (cod_pessoa) references pessoa(cod_pessoa)
- 
-
 );
 
 insert into pessoa values(0,"jooj","jaumzim","123","1",true,"xxxxx.12333",false);
+
+insert into pessoa values(0,"teste","cade","444","1",false,"xxxxx.12333",false);
+
+insert into pessoa values(0,"teste","cade","kkkkkkkkk","123",true,"xxxxx.12333",false);
+
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;

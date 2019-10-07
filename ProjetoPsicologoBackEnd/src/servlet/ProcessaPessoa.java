@@ -77,10 +77,8 @@ public class ProcessaPessoa extends HttpServlet {
 		//CADASTRAR PESSOA
 		if (acao.equals("cadastrarPessoa")) {
 			
-			
 			Pessoa p = new Pessoa();
 		
-
 			String nome = request.getParameter("nome");
 			
 			String nickname = request.getParameter("nickname");
@@ -88,7 +86,6 @@ public class ProcessaPessoa extends HttpServlet {
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
 			boolean verificado = (Boolean.parseBoolean(request.getParameter("verificado")));
 			String identidade = request.getParameter("identidade");
-			boolean anonimo = (Boolean.parseBoolean(request.getParameter("anonimo")));
 			String login = request.getParameter("login");
 		
 			p.setIdentidade(identidade);
@@ -96,7 +93,6 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setSenha(senha);
 			p.setTipoPerf(tipoPerf);
 			p.setVerificado(verificado);
-			p.setAnonimo(anonimo);
 			p.setLogin(login);
 			try {
 				try {
