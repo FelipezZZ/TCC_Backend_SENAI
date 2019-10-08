@@ -28,8 +28,8 @@ public class PessoaDao {
 	
 	private Connection con;
 	private PreparedStatement ps;
-	//public  String key = "bananabananamaca"; // 128 bit key
-	//public  Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
+	private  String key = "bananabananamaca"; // 128 bit key
+	private Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
 	
 	//       MANIPULAÇÃO DE USUARIOS COMUNS//
 	
@@ -37,7 +37,7 @@ public class PessoaDao {
 					//CADASTRA//
 	public boolean cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
-		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo)values(0,?,?,?,?,?,?)";
+		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo)values(0,?,?,?,?,?,?,?)";
 		
 		con = ConnectionDB.getConnection();
 		
@@ -87,13 +87,18 @@ public class PessoaDao {
 		}
 		ps.setString(5, p.getIdentidade());
 		ps.setBytes(6,encrypted);	
+		if(p.isAnonimo()) {
+		ps.setBoolean(7, true);
+		}else {
+			ps.setBoolean(7, false);
+		}
 		return ps.executeUpdate() > 0;
 	}
 	
-	//LISTA Pessoas
+				//LISTA Pessoas
 	public List<Pessoa> listarTodosUsuarios() throws SQLException{
 		
-	String sql = "SELECT * FROM pessoa";
+		String sql = "SELECT * FROM pessoa WHERE tipoperfil = '1' ";
 		
 	con = ConnectionDB.getConnection();
 		
@@ -115,50 +120,24 @@ public class PessoaDao {
 		}
 		
 		return pessoas;
-	}
-	
-	//LISTA Pessoas não verificadas
-	public List<Pessoa> listarNaoVerificados() throws SQLException{
-		
-	String sql = "SELECT * FROM pessoa WHERE tipoperfil='1' and verificado = 0 ";
-		
-	con = ConnectionDB.getConnection();
-		
-		ps = con.prepareStatement(sql);
-		
-		List<Pessoa> pessoas = new ArrayList<>();
-		ResultSet rs = ps.executeQuery();
-		while(rs.next()){
-			Pessoa p = new Pessoa();
-			p.setCod_pessoa(rs.getInt("cod_pessoa"));
-			p.setIdentidade(rs.getString("ident"));
-			p.setLogin(rs.getString("login"));
-			p.setNickname(rs.getString("nickname"));
-			p.setSenha(rs.getString("senha"));
-			p.setVerificado(rs.getBoolean("verificado"));
-			p.setTipoPerf(rs.getInt("tipoperfil"));
-			
-			pessoas.add(p);
-		}
-		
-		return pessoas;
-	}	
+	}		
 				
 				
 	
 					//LOGA//
 	public Boolean tentaLogin(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
 		//STRING DO SQL
-		String sql = "SELECT * FROM usuario ";
+		String sql = "SELECT * FROM pessoa ";
 		sql+= "WHERE login =  ?  ";
 		sql+= "AND senha = ?   ";
 		
 		
 			//Declara cifra baseado na chave global
+		
 		  Cipher cipher = Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, aesKey);  
 		  
-		  
-		  //Pega o login e senha
+		  //Encripta o login pra comparar com o banco
 		String login = p.getLogin();
 		byte[] encrypted = cipher.doFinal(login.getBytes());	
 		
@@ -173,13 +152,13 @@ public class PessoaDao {
 		
 			//decripta o login
 		//cipher.init(Cipher.DECRYPT_MODE, aesKey);
-        String decrypted = new String(cipher.doFinal(encrypted));
-        System.err.println(decrypted);
+       // String decrypted = new String(cipher.doFinal(encrypted));
+       // System.err.println(decrypted);
 	         
         
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
-		ps.setString(1, decrypted);
+		ps.setBytes(1,encrypted);
 		ps.setBytes(2, messageDigestSenha);
 		ps.executeQuery();
 		
@@ -195,27 +174,47 @@ public class PessoaDao {
 
 	
 	
-	//ELEMENTO EXCLUSIVO DE USUARIOS PSICOLOGOS,O USUARIO DEVE ESTAR VERIFICADO ANTES DE PODER
-	//AGIR COMO PSICOLOGO NO APP
-	public boolean verificaPessoa(int i) throws SQLException {	
-		String sql = " UPDATE pessoa SET verificado=true WHERE cod_pessoa = ?";
+				//ELEMENTO EXCLUSIVO DE USUARIOS PSICOLOGOS,O USUARIO DEVE ESTAR VERIFICADO ANTES DE PODER
+				//AGIR COMO PSICOLOGO NO APP
+	public boolean verificaPessoa(int i) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET verificado='true' WHERE cod_user = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		
 		ps.setInt(1, i);
 
+		
 		return ps.executeUpdate() > 0;
 	}
 	
-		public String pegaNickname(String login,String senha ) throws SQLException {
+		public String pegaNickname(String login,String senha ) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 			
-			String sql = "SELECT nickname FROM pessoa WHERE usuario = ? AND senha = ? ";
+			
+			
+			String sql = "SELECT nickname FROM pessoa WHERE login = ? AND senha = ? ";
 			
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			
-			ps.setString(1,login);
-			ps.setString(2, senha);
+			
+			Cipher cipher =  Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, aesKey);	  
+			  
+			  //Pega o login e senha
+
+			byte[] encrypted = cipher.doFinal(login.getBytes());	
+			
+			//gera o hash da senha
+			
+			MessageDigest algorithm = MessageDigest.getInstance("MD5");	
+			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+			
+			
+			ps.setBytes(1,encrypted);
+			ps.setBytes(2, messageDigestSenha);
+			
+			
 
 			ResultSet rs = ps.executeQuery();
 			
@@ -225,6 +224,36 @@ public class PessoaDao {
 			
 		}
 	
+			
+		public void logado(Pessoa p) throws SQLException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException {
+			String sql = "UPDATE pessoa SET logado='true' WHERE login = ? AND senha = ?";
+			
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			
+			String login = p.getLogin();
+			String senha = p.getSenha();
+
+			Cipher cipher =  Cipher.getInstance("AES");
+			cipher.init(Cipher.ENCRYPT_MODE, aesKey);	  
+			  
+			  //Pega o login e senha
+
+			byte[] encrypted = cipher.doFinal(login.getBytes());	
+			
+			//gera o hash da senha
+			
+			MessageDigest algorithm = MessageDigest.getInstance("MD5");	
+			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+			
+			
+			ps.setBytes(1,encrypted);
+			ps.setBytes(2, messageDigestSenha);
+			
+			ps.executeQuery();
+		
+		}
+		
 	
 		//FIM DA MANIPULAÇÃO DE USUARIOS COMUNS
 	
@@ -233,7 +262,7 @@ public class PessoaDao {
 			//MANIPULAÇÃO DE USUARIOS ADMNISTRADORES//
 	
 				
-				//CADASTRA//
+				//CADASTRA ADMIN//
 public boolean cadastraAdmin(Admin a) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		
 		String sql = "INSERT INTO PESSOA(cod_pessoa,login,senha)values(0,?,?)";
@@ -258,7 +287,7 @@ public boolean cadastraAdmin(Admin a) throws SQLException, NoSuchAlgorithmExcept
 	}
 	
 	
-				//LOGA//
+				//LOGA ADMIN//
 	public boolean tentaLoginAdmin(Admin a) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		
 		String sql = "SELECT * FROM admins ";

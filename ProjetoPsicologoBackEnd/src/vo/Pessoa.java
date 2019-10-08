@@ -10,7 +10,14 @@ public class Pessoa {
 	private boolean Verificado;
 	private String identidade;
 	private boolean anonimo;
+	private boolean logado;
 	
+	public boolean isLogado() {
+		return logado;
+	}
+	public void setLogado(boolean logado) {
+		this.logado = logado;
+	}
 	public boolean isAnonimo() {
 		return anonimo;
 	}

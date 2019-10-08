@@ -42,43 +42,32 @@ public class ProcessaPessoa extends HttpServlet {
 			throws ServletException, IOException {
 			
 		
-		//System.out.println("conectou no processa");
+		System.out.println("conectou no processa");
 		
-		PrintWriter out = response.getWriter();
-		JSONObject obj = new JSONObject();
-		PessoaDao pDao = new PessoaDao();
+			PrintWriter out = response.getWriter();
+			JSONObject obj = new JSONObject();
+			PessoaDao pDao = new PessoaDao();
 			
-		//strings da preguiça
+			//strings da preguiça
 			
-		String sucesso = "sucesso";
-		String falha = "falha";
-		String erroSQL = "erro no sql";
+			String sucesso = "sucesso";
+			String falha = "falha";
+			String erroSQL = "erro no sql";
+			String logado = "Usuario já logado";
 		
 		
 		String acao = request.getParameter("acao");
 		
-		//Gerenciamento de pessoas
-		
-		//VERIFICAR PESSOA
-		if(acao.equals("verificar")) {
-			
-			String cod_pessoaV = request.getParameter("cod_pessoaV");
-			int icod_pessoaV = Integer.parseInt(cod_pessoaV);
-			
-			try {
-				pDao.verificaPessoa(icod_pessoaV);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+			//Gerenciamento de pessoas
 		
 		
 		//CADASTRAR PESSOA
 		if (acao.equals("cadastrarPessoa")) {
 			
+			
 			Pessoa p = new Pessoa();
 		
+
 			String nome = request.getParameter("nome");
 			
 			String nickname = request.getParameter("nickname");
@@ -86,6 +75,7 @@ public class ProcessaPessoa extends HttpServlet {
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
 			boolean verificado = (Boolean.parseBoolean(request.getParameter("verificado")));
 			String identidade = request.getParameter("identidade");
+			boolean anonimo = (Boolean.parseBoolean(request.getParameter("anonimo")));
 			String login = request.getParameter("login");
 		
 			p.setIdentidade(identidade);
@@ -93,6 +83,7 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setSenha(senha);
 			p.setTipoPerf(tipoPerf);
 			p.setVerificado(verificado);
+			p.setAnonimo(anonimo);
 			p.setLogin(login);
 			try {
 				try {
@@ -128,7 +119,9 @@ public class ProcessaPessoa extends HttpServlet {
 			}
 		}
 				//LOGAR PESSOA
+		
 		else if(acao.equals("logarPessoa")) {
+			System.out.println("conectou no logar");
 			Pessoa p = new Pessoa();
 			p.setLogin(request.getParameter("login"));
 			p.setSenha(request.getParameter("senha"));
@@ -141,22 +134,7 @@ public class ProcessaPessoa extends HttpServlet {
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-			}
-			
-			try {
-				try {
-					if (pDao.tentaLogin(p)) {
-						
-						obj.put("status", sucesso);
-						
-					}else {
-						obj.put("status",falha);
-					}
-				} catch (InvalidKeyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchPaddingException e) {
+				} catch (NoSuchAlgorithmException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IllegalBlockSizeException e) {
@@ -165,12 +143,48 @@ public class ProcessaPessoa extends HttpServlet {
 				} catch (BadPaddingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (JSONException e) {
+				} catch (NoSuchPaddingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidKeyException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			
+			try {
+				try {
+					
+					if (pDao.tentaLogin(p)) {
+						if( p.isLogado()) {
+							obj.put("status",logado);
+						}
+						obj.put("status", sucesso);
+						pDao.logado(p);
+						System.out.println("foi'");
+						
+					}else {
+						obj.put("status",falha);
+						System.out.println("meh");
+					}
+				} catch (InvalidKeyException e) {
+					
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e) {
+					
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+				
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+				
+					e.printStackTrace();
+				} catch (JSONException e) {
+		
+					e.printStackTrace();
+				}
 			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -178,9 +192,12 @@ public class ProcessaPessoa extends HttpServlet {
 		}
 		
 		//LISTAR PESSOA//
-		else if(acao.equals("listarNaoVerificados")) {
+		
+		
+		else if(acao.equals("listarPessoa")) {
 			try {
-				List<Pessoa> listaPessoas = pDao.listarNaoVerificados();
+							
+				List<Pessoa> listaPessoas = pDao.listarTodosUsuarios();
 				for (Pessoa p : listaPessoas) {
 					obj = new JSONObject();
 					obj.put("cod_pessoa", p.getCod_pessoa());
@@ -191,8 +208,11 @@ public class ProcessaPessoa extends HttpServlet {
 					out.print(obj.toString()+"\n");
 				}
 			} catch (SQLException e) {
+			
 				e.printStackTrace();
 			}
+		}else if(acao.equals("deslogar")) {
+			System.out.println("tentou deslogar");
 		}		
 		
 			
@@ -218,7 +238,7 @@ public class ProcessaPessoa extends HttpServlet {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			obj.put("status", erroSQL);
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}	
 		
@@ -258,6 +278,10 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+			
+			
+		out.print(obj.toString());
+	
 
 		}
 }
