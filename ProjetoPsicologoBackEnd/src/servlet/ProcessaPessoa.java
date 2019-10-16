@@ -53,7 +53,6 @@ public class ProcessaPessoa extends HttpServlet {
 			String sucesso = "sucesso";
 			String falha = "falha";
 			String erroSQL = "erro no sql";
-			String logado = "Usuario já logado";
 		
 		
 		String acao = request.getParameter("acao");
@@ -129,40 +128,16 @@ public class ProcessaPessoa extends HttpServlet {
 			if(p.isAnonimo()) {
 				p.setNickname("Anônimo");
 			}else {
-				try {
-					pDao.pegaNickname(p.getLogin(), p.getSenha());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalBlockSizeException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (BadPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvalidKeyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 			
 			try {
 				try {
 					
 					if (pDao.tentaLogin(p)) {
-						if( p.isLogado()) {
-							obj.put("status",logado);
-						}
-						obj.put("status", sucesso);
-						pDao.logado(p);
-						System.out.println("foi'");
-						
+				
+							pDao.pegaNickname(p.getLogin(), p.getSenha());
+							obj.put("status", sucesso);
+							System.out.println("foi ");
+												
 					}else {
 						obj.put("status",falha);
 						System.out.println("meh");
@@ -190,6 +165,8 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+	}
+		
 		
 		//LISTAR PESSOA//
 		

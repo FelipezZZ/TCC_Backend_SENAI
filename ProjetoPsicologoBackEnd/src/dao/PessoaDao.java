@@ -36,7 +36,7 @@ public class PessoaDao {
 					//CADASTRA//
 	public boolean cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
-		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo,logado)values(0,?,?,?,?,?,?,?,false)";
+		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo,registro,primeiroAcesso)values(0,?,?,?,?,?,?,?,now(),true)";
 		
 		con = ConnectionDB.getConnection();
 		
@@ -85,6 +85,8 @@ public class PessoaDao {
 		}else {
 			ps.setBoolean(7, false);
 		}
+		
+		
 		
 		
 		return ps.executeUpdate() > 0;
@@ -210,32 +212,7 @@ public class PessoaDao {
 			
 		}
 	
-			
-		public void logado(Pessoa p) throws SQLException, IllegalBlockSizeException, BadPaddingException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException {
-			String sql = "UPDATE pessoa SET logado='true' WHERE login = ? AND senha = ?";
-			
-			con = ConnectionDB.getConnection();
-			ps = con.prepareStatement(sql);
-			
-			String senha = p.getSenha();
 
-	  
-			  
-			  //Pega o login e senha
-
-			
-			//gera o hash da senha
-			
-			MessageDigest algorithm = MessageDigest.getInstance("MD5");	
-			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
-			
-			
-			ps.setString(1,p.getLogin());
-			ps.setBytes(2, messageDigestSenha);
-			
-			ps.executeUpdate();
-		
-		}
 		
 	
 		//FIM DA MANIPULAÇÃO DE USUARIOS COMUNS

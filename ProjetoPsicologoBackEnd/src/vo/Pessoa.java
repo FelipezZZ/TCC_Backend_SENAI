@@ -1,5 +1,7 @@
 package vo;
 
+import java.util.Date;
+
 public class Pessoa {
 
 	private int cod_pessoa;
@@ -10,13 +12,15 @@ public class Pessoa {
 	private boolean Verificado;
 	private String identidade;
 	private boolean anonimo;
-	private boolean logado;
+	private Date registro;
+	private boolean primeiroAcesso;
 	
-	public boolean isLogado() {
-		return logado;
+
+	public boolean isPrimeiroAcesso() {
+		return primeiroAcesso;
 	}
-	public void setLogado(boolean logado) {
-		this.logado = logado;
+	public void setPrimeiroAcesso(boolean primeiroAcesso) {
+		this.primeiroAcesso = primeiroAcesso;
 	}
 	public boolean isAnonimo() {
 		return anonimo;
