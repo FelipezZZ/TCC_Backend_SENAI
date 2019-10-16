@@ -28,8 +28,7 @@ public class PessoaDao {
 	
 	private Connection con;
 	private PreparedStatement ps;
-	private  String key = "bananabananamaca"; // 128 bit key
-	private Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
+
 	
 	//       MANIPULAÇÃO DE USUARIOS COMUNS//
 	
@@ -37,12 +36,11 @@ public class PessoaDao {
 					//CADASTRA//
 	public boolean cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
-		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo)values(0,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo,logado)values(0,?,?,?,?,?,?,?,false)";
 		
 		con = ConnectionDB.getConnection();
 		
 		//criptografia ???
-		String login = p.getLogin();
 		String senha = p.getSenha();
 		
 		
@@ -50,15 +48,10 @@ public class PessoaDao {
 		
 		 
          // Create key and cipher
-		String key = "bananabananamaca"; // 128 bit key
-		Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
-         Cipher cipher = Cipher.getInstance("AES");
          
          // encrypt the text
-         cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-         byte[] encrypted = cipher.doFinal(login.getBytes());
-         System.err.println(new String(encrypted));
-         
+
+    
          /* decrypt the text
          cipher.init(Cipher.DECRYPT_MODE, aesKey);
          String decrypted = new String(cipher.doFinal(encrypted));
@@ -86,12 +79,14 @@ public class PessoaDao {
 			ps.setBoolean(4, false);
 		}
 		ps.setString(5, p.getIdentidade());
-		ps.setBytes(6,encrypted);	
+		ps.setString(6,p.getLogin());	
 		if(p.isAnonimo()) {
 		ps.setBoolean(7, true);
 		}else {
 			ps.setBoolean(7, false);
 		}
+		
+		
 		return ps.executeUpdate() > 0;
 	}
 	
@@ -127,19 +122,14 @@ public class PessoaDao {
 					//LOGA//
 	public Boolean tentaLogin(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
 		//STRING DO SQL
-		String sql = "SELECT * FROM pessoa ";
-		sql+= "WHERE login =  ?  ";
-		sql+= "AND senha = ?   ";
+		String sql = "SELECT * FROM pessoa WHERE login = ? AND senha = ?   ";
 		
 		
 			//Declara cifra baseado na chave global
 		
-		  Cipher cipher = Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, aesKey);  
+		
 		  
 		  //Encripta o login pra comparar com o banco
-		String login = p.getLogin();
-		byte[] encrypted = cipher.doFinal(login.getBytes());	
 		
 		//gera o hash da senha
 		String senha = p.getSenha();
@@ -158,17 +148,14 @@ public class PessoaDao {
         
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
-		ps.setBytes(1,encrypted);
+		ps.setString(1,p.getLogin());
 		ps.setBytes(2, messageDigestSenha);
-		ps.executeQuery();
+
 		
 		ResultSet rs = ps.executeQuery();
+			
+		return rs.next();
 		
-		if(rs.next()) {
-			return true;
-		}else {
-			return false;
-		}
 	}
 	
 
@@ -198,12 +185,11 @@ public class PessoaDao {
 			ps = con.prepareStatement(sql);
 			
 			
-			Cipher cipher =  Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, aesKey);	  
+			  
 			  
 			  //Pega o login e senha
 
-			byte[] encrypted = cipher.doFinal(login.getBytes());	
+			
 			
 			//gera o hash da senha
 			
@@ -211,7 +197,7 @@ public class PessoaDao {
 			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
 			
 			
-			ps.setBytes(1,encrypted);
+			ps.setString(1,login);
 			ps.setBytes(2, messageDigestSenha);
 			
 			
@@ -231,15 +217,12 @@ public class PessoaDao {
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			
-			String login = p.getLogin();
 			String senha = p.getSenha();
 
-			Cipher cipher =  Cipher.getInstance("AES");
-			cipher.init(Cipher.ENCRYPT_MODE, aesKey);	  
+	  
 			  
 			  //Pega o login e senha
 
-			byte[] encrypted = cipher.doFinal(login.getBytes());	
 			
 			//gera o hash da senha
 			
@@ -247,10 +230,10 @@ public class PessoaDao {
 			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
 			
 			
-			ps.setBytes(1,encrypted);
+			ps.setString(1,p.getLogin());
 			ps.setBytes(2, messageDigestSenha);
 			
-			ps.executeQuery();
+			ps.executeUpdate();
 		
 		}
 		
@@ -270,17 +253,15 @@ public boolean cadastraAdmin(Admin a) throws SQLException, NoSuchAlgorithmExcept
 		con = ConnectionDB.getConnection();
 		
 		//criptografia ???
-		String login = a.getLogin();
-		String senha = a.getSenha();
+			String senha = a.getSenha();
 		
 		MessageDigest algorithm = MessageDigest.getInstance("MD5");
-		byte messageDigestLogin[] = algorithm.digest(login.getBytes("UTF-8"));
 		byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
 		
 		
 		//prepara o sql
 		ps = con.prepareStatement(sql);
-		ps.setBytes(1, messageDigestLogin);		
+		ps.setString(1, a.getLogin());		
 		ps.setBytes(2, messageDigestSenha);
 		
 		return ps.executeUpdate() > 0;
@@ -294,17 +275,17 @@ public boolean cadastraAdmin(Admin a) throws SQLException, NoSuchAlgorithmExcept
 		sql+= "WHERE login =  ?  ";
 		sql+= "AND senha = ?   ";
 		
-		String login = a.getLogin();
+
 		String senha = a.getSenha();
 		
 			MessageDigest algorithm = MessageDigest.getInstance("MD5");
-			byte messageDigestLogin[] = algorithm.digest(login.getBytes("UTF-8"));
+			
 			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
 			
 		
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
-		ps.setBytes(1, messageDigestLogin);
+		ps.setString(1, a.getLogin());
 		ps.setBytes(2, messageDigestSenha);
 		ps.executeQuery();
 		
