@@ -161,7 +161,7 @@ public class ProcessaPessoa extends HttpServlet {
 						}
 						obj.put("status", sucesso);
 						pDao.logado(p);
-						System.out.println("foi'");
+						System.out.println("login sucesso'");
 						
 					}else {
 						obj.put("status",falha);
