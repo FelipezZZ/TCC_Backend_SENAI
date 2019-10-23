@@ -162,12 +162,12 @@ public class PessoaDao {
 	
 
 	
-	
+	0
 				//ELEMENTO EXCLUSIVO DE USUARIOS PSICOLOGOS,O USUARIO DEVE ESTAR VERIFICADO ANTES DE PODER
 				//AGIR COMO PSICOLOGO NO APP
 	public boolean verificaPessoa(int i) throws SQLException {
 		
-		String sql = " UPDATE pessoa SET verificado='true' WHERE cod_user = ?";
+		String sql = " UPDATE pessoa SET verificado=true WHERE cod_pessoa = ?";
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
 		
@@ -211,8 +211,205 @@ public class PessoaDao {
 			return rs.getString(1);
 			
 		}
+	/*
+		public boolean pegaAcesso(String login,String senha) throws NoSuchAlgorithmException, SQLException, UnsupportedEncodingException {
+			
+			String sql = "SELECT primeiroAcesso FROM pessoa WHERE login = ? AND senha = ? ";
+			
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			
+			
+			  
+			  
+			  //Pega o login e senha
+
+			
+			
+			//gera o hash da senha
+			
+			MessageDigest algorithm = MessageDigest.getInstance("MD5");	
+			byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+			
+			
+			ps.setString(1,login);
+			ps.setBytes(2, messageDigestSenha);
+			
+			
+
+			ResultSet rs = ps.executeQuery();
+			
+			rs.next();
+			
+			return rs.getBoolean(1);
+			
+			
+			
+		}
+		*/
+		
+		
+		//VERIFICA SE É O PRIMEIRO ACESSO E RETORNA
+		
+		
+	public boolean primeiroAcesso(String login,String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+		
+	String sql = "SELECT primeiroAcesso FROM pessoa WHERE login = ? and senha = ?";
+	
+	con = ConnectionDB.getConnection();
+	ps = con.prepareStatement(sql);
 	
 
+	
+	//gera o hash da senha
+	
+	MessageDigest algorithm = MessageDigest.getInstance("MD5");	
+	byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+	
+	
+	ps.setString(1,login);
+	ps.setBytes(2,messageDigestSenha);
+	
+	
+	
+
+	ResultSet rs = ps.executeQuery();
+	
+	rs.next();
+	
+	return rs.getBoolean(1);
+	
+		
+	}
+			
+	
+		//EDITA PERFIL
+	
+	public int pegaChave(String login,String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+		
+		String sql = "SELECT cod_pessoa FROM pessoa WHERE login= ? and senha = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+
+		
+		//gera o hash da senha
+		
+		MessageDigest algorithm = MessageDigest.getInstance("MD5");	
+		byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+		
+		
+		ps.setString(1,login);
+		ps.setBytes(2,messageDigestSenha);
+		
+		
+		
+
+		ResultSet rs = ps.executeQuery();
+		
+		rs.next();
+		
+		return rs.getInt(1);
+		
+		
+	}
+	
+	public boolean editaPerfil(String edit,int cod_pessoa,String dado) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
+		
+		String sql = "";
+		switch (edit){
+		
+		case "nickname":
+		sql = "UPDATE nickname SET = ? WHERE cod_pessoa = ? ";
+
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		
+		ps.setString(1,dado);
+		ps.setInt(2, cod_pessoa);
+	
+		
+			break;
+			
+		case "senha":
+			sql = "UPDATE senha SET = ?  WHERE cod_pessoa = ? ";
+			MessageDigest algorithm = MessageDigest.getInstance("MD5");	
+			byte messageDigestSenha[] = algorithm.digest(dado.getBytes("UTF-8"));
+			
+
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			
+			ps.setBytes(1,messageDigestSenha);
+			ps.setInt(2,cod_pessoa);
+			
+			break;
+			
+		case "ident":
+			sql = "UPDATE ident SET = ? WHERE cod_pessoa = ? ";
+	
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			
+			ps.setString(1,dado);
+			ps.setInt(2, cod_pessoa);
+			
+		break;
+		
+		case "tipoPerfil":
+			sql = "UPDATE tipoPerfil SET = ? WHERE cod_pessoa = ? ";
+			
+
+			con = ConnectionDB.getConnection();
+			ps = con.prepareStatement(sql);
+			
+			ps.setBoolean(1, Boolean.parseBoolean(dado));
+			ps.setInt(2, cod_pessoa);
+			
+			break;
+		
+		}
+	
+		return ps.executeUpdate() > 0;
+		
+	}
+		//LISTA NÃO VERIFICADOS
+		
+		public List<Pessoa> listarNaoVerificados() throws SQLException{
+			
+			String sql = "SELECT * FROM pessoa WHERE tipoPerfil = '1' and verificado = '0' ";
+			
+		con = ConnectionDB.getConnection();
+			
+			ps = con.prepareStatement(sql);
+			
+			List<Pessoa> pessoas = new ArrayList<>();
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				Pessoa p = new Pessoa();
+				p.setCod_pessoa(rs.getInt("cod_pessoa"));
+				p.setIdentidade(rs.getString("ident"));
+				p.setLogin(rs.getString("login"));
+				p.setNickname(rs.getString("nickname"));
+				p.setSenha(rs.getString("senha"));
+				p.setVerificado(rs.getBoolean("verificado"));
+				p.setTipoPerf(rs.getInt("tipoperfil"));
+				p.setRegistro(rs.getDate("registro"));
+				
+				pessoas.add(p);
+			}
+			
+			return pessoas;
+		}		
+		
+		
+		
+	
+		
+		
+	
 		
 	
 		//FIM DA MANIPULAÇÃO DE USUARIOS COMUNS
@@ -249,7 +446,7 @@ public boolean cadastraAdmin(Admin a) throws SQLException, NoSuchAlgorithmExcept
 	public boolean tentaLoginAdmin(Admin a) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		
 		String sql = "SELECT * FROM admins ";
-		sql+= "WHERE login =  ?  ";
+		sql+= "WHERE login =  ? ";
 		sql+= "AND senha = ?   ";
 		
 

@@ -7,6 +7,12 @@ public class Pessoa {
 	private int cod_pessoa;
 	private String login;
 	private String nickname;
+	public Date getRegistro() {
+		return registro;
+	}
+	public void setRegistro(Date registro) {
+		this.registro = registro;
+	}
 	private  String senha;
 	private int tipoPerf;
 	private boolean Verificado;

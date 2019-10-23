@@ -125,17 +125,24 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setLogin(request.getParameter("login"));
 			p.setSenha(request.getParameter("senha"));
 			p.setAnonimo(Boolean.parseBoolean(request.getParameter("anonimo")));
-			if(p.isAnonimo()) {
-				p.setNickname("Anônimo");
-			}else {
+			
 			
 			try {
 				try {
 					
 					if (pDao.tentaLogin(p)) {
 				
-							pDao.pegaNickname(p.getLogin(), p.getSenha());
+						if(p.isAnonimo()) {
+							p.setNickname("Anônimo");
+							obj.put("nickname", "anonimo");
+							
+						}else {
+						
+						obj.put("nickname",pDao.pegaNickname(p.getLogin(), p.getSenha()));
+						}
 							obj.put("status", sucesso);
+							obj.put("chave", pDao.pegaChave(p.getLogin(), p.getSenha()));
+							
 							System.out.println("foi ");
 												
 					}else {
@@ -165,7 +172,22 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-	}
+		
+		else if(acao.equals("editarPerfil")) {
+			try {
+				pDao.editaPerfil(request.getParameter("edit"),Integer.parseInt(request.getParameter("cod_pessoa")),request.getParameter("dado"));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
 		
 		
 		//LISTAR PESSOA//
@@ -240,8 +262,30 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 				
+		
+		}else if(acao.equals("listarNaoVerificados")) {
+				System.out.println("tentou listar");
+				try {
+					List<Pessoa> listaPessoas = pDao.listarNaoVerificados();
+					for (Pessoa p : listaPessoas) {
+						obj = new JSONObject();
+						obj.put("cod_pessoa", p.getCod_pessoa());
+						obj.put("login",p.getLogin());
+						obj.put("nickname", p.getNickname());
+						obj.put("identidade", p.getIdentidade());
+						obj.put("registro", p.getRegistro());
+						out.print(obj.toString()+"\n");
+					}
+				} catch (JSONException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			
 		}else if(acao.equals("verificaPessoa")) {
-			int i = Integer.parseInt(request.getParameter("cod_user"));
+			System.out.println("tentou verificar");
+			int i = Integer.parseInt(request.getParameter("cod_pessoaV"));
 			
 			try {
 				if(pDao.verificaPessoa(i)) {
@@ -254,11 +298,16 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			
 		}
 			
-			
+		else if(acao.equals("listarNaoVerificados")){	
+				
+			}
+			else {
 		out.print(obj.toString());
-	
+			}
 
 		}
 }
