@@ -162,7 +162,7 @@ public class PessoaDao {
 	
 
 	
-	0
+	
 				//ELEMENTO EXCLUSIVO DE USUARIOS PSICOLOGOS,O USUARIO DEVE ESTAR VERIFICADO ANTES DE PODER
 				//AGIR COMO PSICOLOGO NO APP
 	public boolean verificaPessoa(int i) throws SQLException {
