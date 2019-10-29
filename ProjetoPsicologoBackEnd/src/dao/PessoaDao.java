@@ -50,7 +50,7 @@ public class PessoaDao {
 				//CRIPTOGRAFIA DO LOGIN 
 		
 		 
-         // Create key and cipher
+         // Create key and cipher/
          
          // encrypt the text
 
@@ -283,8 +283,8 @@ public class PessoaDao {
 	}
 			
 	
-		//EDITA PERFIL
-	
+		
+	//PEGA CHAVE PRIMAR
 	public int pegaChave(String login,String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 		
 		String sql = "SELECT cod_pessoa FROM pessoa WHERE login= ? and senha = ?";
@@ -314,7 +314,7 @@ public class PessoaDao {
 		
 		
 	}
-	
+	//EDITA PERFIL
 	public boolean editaPerfil(String edit,int cod_pessoa,String dado) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
 		
 		String sql = "";

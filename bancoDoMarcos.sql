@@ -13,7 +13,8 @@ tipoperfil integer(3) not null ,
 verificado boolean not null,
 ident varchar(20),
 anonimo boolean not null,
-logado boolean not null
+registro date not null,
+primeiroAcesso boolean
 );
 
 create table admins(
@@ -30,5 +31,5 @@ create table perfps(
 
 );
 
-insert into pessoa values(0,"jool","jaumzim","123","1",false,"xxxxx.12333",false,false);
+insert into pessoa values(0,"jooj","kok","123","1",true,"xxxxx.12333",false,false);
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
