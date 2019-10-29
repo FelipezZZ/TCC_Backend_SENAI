@@ -30,5 +30,5 @@ create table perfps(
 
 );
 
-insert into pessoa values(0,"jooj","jaumzim","123","1",true,"xxxxx.12333",false);
+insert into pessoa values(0,"jool","jaumzim","123","1",false,"xxxxx.12333",false,false);
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;

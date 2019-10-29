@@ -41,7 +41,7 @@ public class ProcessaPessoa extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 			
-		
+		int v = 0;
 		System.out.println("conectou no processa");
 		
 			PrintWriter out = response.getWriter();
@@ -73,7 +73,7 @@ public class ProcessaPessoa extends HttpServlet {
 			String senha = request.getParameter("senha");
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
 			boolean verificado = (Boolean.parseBoolean(request.getParameter("verificado")));
-			String identidade = request.getParameter("identidade");
+			String identidade = request.getParameter("identidade"); 
 			boolean anonimo = (Boolean.parseBoolean(request.getParameter("anonimo")));
 			String login = request.getParameter("login");
 		
@@ -121,6 +121,7 @@ public class ProcessaPessoa extends HttpServlet {
 		
 		else if(acao.equals("logarPessoa")) {
 			System.out.println("conectou no logar");
+			v=1;
 			Pessoa p = new Pessoa();
 			p.setLogin(request.getParameter("login"));
 			p.setSenha(request.getParameter("senha"));
@@ -134,7 +135,7 @@ public class ProcessaPessoa extends HttpServlet {
 				
 						if(p.isAnonimo()) {
 							p.setNickname("Anônimo");
-							obj.put("nickname", "anonimo");
+							obj.put("nickname", p.getNickname());
 							
 						}else {
 						
@@ -264,9 +265,11 @@ public class ProcessaPessoa extends HttpServlet {
 				
 		
 		}else if(acao.equals("listarNaoVerificados")) {
+				v = 1;
 				System.out.println("tentou listar");
 				try {
 					List<Pessoa> listaPessoas = pDao.listarNaoVerificados();
+			
 					for (Pessoa p : listaPessoas) {
 						obj = new JSONObject();
 						obj.put("cod_pessoa", p.getCod_pessoa());
@@ -274,7 +277,10 @@ public class ProcessaPessoa extends HttpServlet {
 						obj.put("nickname", p.getNickname());
 						obj.put("identidade", p.getIdentidade());
 						obj.put("registro", p.getRegistro());
+					
 						out.print(obj.toString()+"\n");
+	
+						
 					}
 				} catch (JSONException | SQLException e) {
 					// TODO Auto-generated catch block
@@ -302,13 +308,13 @@ public class ProcessaPessoa extends HttpServlet {
 			
 		}
 			
-		else if(acao.equals("listarNaoVerificados")){	
-				
-			}
-			else {
+		if(acao.equals("logarPessoa")) {
 		out.print(obj.toString());
+		}else {
+			
+		}
 			}
 
-		}
+		
 }
 

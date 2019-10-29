@@ -36,7 +36,10 @@ public class PessoaDao {
 					//CADASTRA//
 	public boolean cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
+
 		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo,registro,primeiroAcesso)values(0,?,?,?,?,?,?,?,now(),true)";
+
+	
 		
 		con = ConnectionDB.getConnection();
 		
@@ -85,11 +88,8 @@ public class PessoaDao {
 		}else {
 			ps.setBoolean(7, false);
 		}
-		
-		
-		
-		
 		return ps.executeUpdate() > 0;
+		
 	}
 	
 				//LISTA Pessoas
