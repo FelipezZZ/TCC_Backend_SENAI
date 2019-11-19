@@ -176,15 +176,20 @@ public class ProcessaPessoa extends HttpServlet {
 		
 		else if(acao.equals("editarPerfil")) {
 			try {
-				pDao.editaPerfil(request.getParameter("edit"),Integer.parseInt(request.getParameter("cod_pessoa")),request.getParameter("dado"));
+				
+				if(pDao.editaPerfil(request.getParameter("edit"),Integer.parseInt(request.getParameter("cod_pessoa")),request.getParameter("dado"))) {
+				System.out.println("editou com sucesso");
+				}else {
+					System.out.println("falha na edição");
+				}
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+	
 				e.printStackTrace();
 			}
 		}

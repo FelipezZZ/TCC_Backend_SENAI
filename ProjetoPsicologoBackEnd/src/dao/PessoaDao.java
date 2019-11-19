@@ -321,7 +321,7 @@ public class PessoaDao {
 		switch (edit){
 		
 		case "nickname":
-		sql = "UPDATE nickname SET = ? WHERE cod_pessoa = ? ";
+		sql = "UPDATE pessoa SET nickname = ? WHERE cod_pessoa = ? ";
 
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
@@ -334,7 +334,7 @@ public class PessoaDao {
 			break;
 			
 		case "senha":
-			sql = "UPDATE senha SET = ?  WHERE cod_pessoa = ? ";
+			sql = "UPDATE pessoa  SET senha = ?  WHERE cod_pessoa = ? ";
 			MessageDigest algorithm = MessageDigest.getInstance("MD5");	
 			byte messageDigestSenha[] = algorithm.digest(dado.getBytes("UTF-8"));
 			
@@ -348,7 +348,7 @@ public class PessoaDao {
 			break;
 			
 		case "ident":
-			sql = "UPDATE ident SET = ? WHERE cod_pessoa = ? ";
+			sql = "UPDATE pessoa SET ident = ? WHERE cod_pessoa = ? ";
 	
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
@@ -359,13 +359,13 @@ public class PessoaDao {
 		break;
 		
 		case "tipoPerfil":
-			sql = "UPDATE tipoPerfil SET = ? WHERE cod_pessoa = ? ";
+			sql = "UPDATE pessoa SET tipoperfil = ? WHERE cod_pessoa = ? ";
 			
 
 			con = ConnectionDB.getConnection();
 			ps = con.prepareStatement(sql);
 			
-			ps.setBoolean(1, Boolean.parseBoolean(dado));
+			ps.setInt(1, Integer.valueOf(dado));
 			ps.setInt(2, cod_pessoa);
 			
 			break;

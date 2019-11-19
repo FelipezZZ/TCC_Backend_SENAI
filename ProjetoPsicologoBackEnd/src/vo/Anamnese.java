@@ -1,6 +1,6 @@
 package vo;
 
-public class PerfPS {
+public class Anamnese {
 	
 	private int cod_pessoa;
 	private int depressao;

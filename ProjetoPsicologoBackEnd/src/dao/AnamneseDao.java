@@ -11,7 +11,7 @@ public class AnamneseDao {
 
 	public boolean fazAnamnese(int cod_pessoa,double ansiedade,double depressao,double estresse,String comentario) throws SQLException {
 		
-	String sql = "INSERT INTO ANAMNESE (?,?,?,?,?)";	
+	String sql = "INSERT INTO ANAMNESE(cod_pessoa,ansiedade,depressao,estresse,comentario) values(?,?,?,?,?)";	
 	
 	con = ConnectionDB.getConnection();
 	
@@ -22,8 +22,11 @@ public class AnamneseDao {
 	ps.setDouble(3, depressao);
 	ps.setDouble(4, estresse);
 	ps.setString(5, comentario);
+	
+	
 	return ps.executeUpdate() > 0;
 		
+	
 	
 	
 	}
