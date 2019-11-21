@@ -34,7 +34,7 @@ public class PessoaDao {
 	
 	
 					//CADASTRA//
-	public boolean cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
+	public int cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
 
 		String sql = "INSERT INTO PESSOA(cod_pessoa,nickname,senha,tipoperfil,verificado,ident,login,anonimo,registro,primeiroAcesso)values(0,?,?,?,?,?,?,?,now(),true)";
@@ -88,7 +88,13 @@ public class PessoaDao {
 		}else {
 			ps.setBoolean(7, false);
 		}
-		return ps.executeUpdate() > 0;
+		ps.executeUpdate();
+		
+		
+		
+		
+		
+		return pegaChave(p.getLogin(), p.getSenha()); 
 		
 	}
 	
@@ -409,7 +415,10 @@ public class PessoaDao {
 	
 		
 		
-	
+		// FUNÇÃO GAMBIARRA zap2017
+			
+		
+		
 		
 	
 		//FIM DA MANIPULAÇÃO DE USUARIOS COMUNS

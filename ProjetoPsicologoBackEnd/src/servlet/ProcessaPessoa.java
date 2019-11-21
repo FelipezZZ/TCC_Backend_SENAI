@@ -6,6 +6,7 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.crypto.BadPaddingException;
@@ -40,7 +41,9 @@ public class ProcessaPessoa extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-			
+			//FUNCIONARIO COD = 1
+			//PACIENTE COD = 2 
+			//PELO AMOR DE JEOVÁ,ZEUS E VISHNU NÃO ESQUECER DISSO
 		int v = 0;
 		System.out.println("conectou no processa");
 		
@@ -84,19 +87,21 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setVerificado(verificado);
 			p.setAnonimo(anonimo);
 			p.setLogin(login);
-			try {
+			
 				try {
-					if(pDao.cadastraPessoa(p)) {
+					
 						System.out.println("tentou cadastrar");
-					obj.put("status", sucesso);
-					}
-					else {
-						obj.put("status", falha);
-					}
+					//obj.put("status", pDao.cadastraPessoa(p));
+					System.out.println(pDao.cadastraPessoa(p));
+			
+				}catch(SQLIntegrityConstraintViolationException e) {
+						e.printStackTrace();
+						obj.put("status", "login existente");
+					
 				} catch (InvalidKeyException e) {
 				
 					e.printStackTrace();
-				} catch (IllegalBlockSizeException e) {
+				}catch (IllegalBlockSizeException e) {
 					
 					e.printStackTrace();
 				} catch (BadPaddingException e) {
@@ -105,18 +110,21 @@ public class ProcessaPessoa extends HttpServlet {
 				} catch (NoSuchPaddingException e) {
 				
 					e.printStackTrace();
-				}
+				
 			} catch (SQLException e) {
 				obj.put("status",erroSQL);
 				e.printStackTrace();
+				
 			} catch (NoSuchAlgorithmException e) {
 		
 				e.printStackTrace();
 			} catch (JSONException e) {
 			
 				e.printStackTrace();	
-			}
+		
 		}
+		}
+		
 				//LOGAR PESSOA
 		
 		else if(acao.equals("logarPessoa")) {
