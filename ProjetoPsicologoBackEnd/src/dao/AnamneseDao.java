@@ -25,9 +25,6 @@ public class AnamneseDao {
 	
 	
 	return ps.executeUpdate() > 0;
-		
-	
-	
 	
 	}
 	
