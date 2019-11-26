@@ -131,10 +131,36 @@ public class ProcessaPessoa extends HttpServlet {
 			
 			System.out.println("to no salvarAnamnese");
 			
+			String cod_pessoa = request.getParameter("codPessoa");
 			String a = request.getParameter("a");
 			String d = request.getParameter("d");
 			String s = request.getParameter("s");
 			
+			System.out.println(cod_pessoa);
+			
+			try {
+				pDao.salvarAnamnese(cod_pessoa, a, d, s);
+				out.print("success");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		if(acao.equals("mudarAcesso")) {
+			
+			System.out.println("to no mudarAcesso");
+			
+			String cod_pessoa = request.getParameter("codPessoa");
+			
+			try {
+				pDao.mudarAcesso(cod_pessoa);
+				out.print("success");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 		

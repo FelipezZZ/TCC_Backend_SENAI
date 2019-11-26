@@ -124,6 +124,33 @@ public class PessoaDao {
 		
 		return rs.getBoolean(1);
 	}
+	
+	public void salvarAnamnese(String cod_pessoa, String a, String d, String s) throws SQLException {
+		
+		String sql = "INSERT INTO anamnese(cod_pessoa,a,d,s) values(?,?,?,?)";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1,cod_pessoa);
+		ps.setString(2, a);
+		ps.setString(3, d);
+		ps.setString(4, s);
+		
+		ps.executeUpdate();
+	}
+	
+	public void mudarAcesso(String cod_pessoa) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET primeiroAcesso = false WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1,cod_pessoa);
+		
+		ps.executeUpdate();
+	}
 
 }
 		
