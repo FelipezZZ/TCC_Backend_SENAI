@@ -32,8 +32,8 @@ public class PessoaDao {
 	//CADASTRA//
 	public int cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
-		String sql = "INSERT INTO PESSOA(cod_pessoa,universidade,RA,nome,email,senha,tipoperfil,verificado,dataCadastro,primeiroAcesso)"
-				+ "values(0,?,?,?,?,?,?,false,now(),true)";
+		String sql = "INSERT INTO PESSOA(cod_pessoa,universidade,RA,nome,email,senha,tipoperfil,verificado,dataCadastro,primeiroAcesso,cadastroFB)"
+				+ "values(0,?,?,?,?,?,?,false,now(),true,true)";
 
 		con = ConnectionDB.getConnection();
 		
@@ -150,8 +150,33 @@ public class PessoaDao {
 		ps.setString(1,cod_pessoa);
 		
 		ps.executeUpdate();
+		
 	}
 
+	public int verificaCadastroSQL(String email, String senha) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		
+		String sql = " SELECT cod_pessoa FROM pessoa WHERE email = ? and senha = ? and cadastroFB = false ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+        MessageDigest algorithm = MessageDigest.getInstance("MD5");
+		byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+		
+		ps.setString(1, email);
+		ps.setBytes(2, messageDigestSenha);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		rs.next();
+		
+		if(rs.getInt(1) > 0) {
+			return rs.getInt(1);
+		}else {
+			return 0;
+		}
+		
+	}
 }
 		
 		

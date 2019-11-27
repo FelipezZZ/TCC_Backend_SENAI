@@ -164,6 +164,23 @@ public class ProcessaPessoa extends HttpServlet {
 			
 		}
 		
+		if(acao.equals("verificaCadastroSQL")) {
+			
+			System.out.println("to no verificaCadastroSQL");
+			
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+			
+			try {
+				int cod_pessoa = pDao.verificaCadastroSQL(email, senha);
+				out.print(cod_pessoa);
+				System.out.println(cod_pessoa);
+			} catch (SQLException | NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}	
 }
 

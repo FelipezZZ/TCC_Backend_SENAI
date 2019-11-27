@@ -15,13 +15,8 @@ create table pessoa(
 	tipoperfil integer not null ,
 	verificado boolean not null,
 	dataCadastro date not null,
-	primeiroAcesso boolean
-);
-
-create table admins(
-	cod_admin integer primary key auto_increment,
-	login varchar(50) not null unique,
-	senha varchar(50) not null
+	primeiroAcesso boolean not null,
+	cadastroFB boolean not null
 );
 
 create table anamnese(
@@ -30,6 +25,12 @@ create table anamnese(
 	a integer not null,
 	d integer not null,
 	s integer not null
+);
+
+create table admins(
+	cod_admin integer primary key auto_increment,
+	login varchar(50) not null unique,
+	senha varchar(50) not null
 );
 
 
@@ -44,7 +45,7 @@ insert into universidades values(0, "Universidade Teste 2");
 insert into universidades values(0, "Universidade Teste 3");
 insert into universidades values(0, "Universidade Teste 4");*/
 
-insert into pessoa values(0,"jooj","kok","123","1",true,"xxxxx.12333",false,false);
+insert into pessoa values(0,null,null,null,"Caio","c@gmail.com","123456",2,false,now(),true,false);
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
 
 
