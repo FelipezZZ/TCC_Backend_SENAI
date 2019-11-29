@@ -75,7 +75,10 @@ public class ProcessaPessoa extends HttpServlet {
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
+			String ScadastroFB = request.getParameter("cadastroFB");
 		
+			System.out.println("cadastroFB " + ScadastroFB);
+			
 			p.setUniversidade(universidade);
 			p.setRA(RA);
 			
@@ -83,6 +86,7 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setEmail(email);
 			p.setSenha(senha);
 			p.setTipoPerf(tipoPerf);
+			p.setCadastroFb(Boolean.parseBoolean(ScadastroFB));
 			
 			try {
 				int cod_pessoa = pDao.cadastraPessoa(p);
@@ -189,7 +193,14 @@ public class ProcessaPessoa extends HttpServlet {
 			
 			String cod_pessoa = request.getParameter("codPessoa");
 			
-			System.out.println(cod_pessoa);
+			try {
+				String nome = pDao.pegarNome(cod_pessoa);
+				pDao.mudarCadastroFB(cod_pessoa);
+				out.print(nome);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 		}
 		

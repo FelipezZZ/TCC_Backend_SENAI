@@ -17,9 +17,10 @@ public class Pessoa {
 	private boolean Verificado;
 	private boolean primeiroAcesso;
 	private Date dataCadastro;
+	private boolean cadastroFb;
 	
 	public Pessoa(int cod_pessoa, String universidade, String rA, String descricao, String nome, String email,
-			String senha, int tipoPerf, boolean verificado, boolean primeiroAcesso, Date dataCadastro) {
+			String senha, int tipoPerf, boolean verificado, boolean primeiroAcesso, Date dataCadastro, boolean cadastroFB) {
 		
 	}
 
@@ -113,6 +114,14 @@ public class Pessoa {
 
 	public void setDataCadastro(Date dataCadastro) {
 		this.dataCadastro = dataCadastro;
+	}
+
+	public boolean isCadastroFb() {
+		return cadastroFb;
+	}
+
+	public void setCadastroFb(boolean cadastroFb) {
+		this.cadastroFb = cadastroFb;
 	}
 	
 	

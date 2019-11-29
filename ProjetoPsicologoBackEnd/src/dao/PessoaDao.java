@@ -33,7 +33,7 @@ public class PessoaDao {
 	public int cadastraPessoa(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, InvalidKeyException {
 		
 		String sql = "INSERT INTO PESSOA(cod_pessoa,universidade,RA,nome,email,senha,tipoperfil,verificado,dataCadastro,primeiroAcesso,cadastroFB)"
-				+ "values(0,?,?,?,?,?,?,false,now(),true,false)";
+				+ "values(0,?,?,?,?,?,?,false,now(),true,?)";
 
 		con = ConnectionDB.getConnection();
 		
@@ -69,7 +69,8 @@ public class PessoaDao {
 		ps.setString(3, p.getNome());
 		ps.setString(4, p.getEmail());
 		ps.setBytes(5, messageDigestSenha);
-		ps.setInt(6, p.getTipoPerf());	
+		ps.setInt(6, p.getTipoPerf());
+		ps.setBoolean(7, p.isCadastroFb());
 		ps.executeUpdate();
 		
 		return pegaChave(p.getEmail()); 
@@ -127,7 +128,7 @@ public class PessoaDao {
 	
 	public void salvarAnamnese(String cod_pessoa, String a, String d, String s) throws SQLException {
 		
-		String sql = "INSERT INTO anamnese(cod_pessoa,a,d,s) values(?,?,?,?)";
+		String sql = "INSERT INTO anamnese(cod_pessoa,a,d,s,dataAnamnese) values(?,?,?,?,now())";
 		
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
@@ -176,6 +177,37 @@ public class PessoaDao {
 			return 0;
 		}
 	}
+	
+	public String pegarNome(String cod_pessoa) throws SQLException {
+		
+		String sql = " SELECT nome FROM pessoa WHERE cod_pessoa = ? ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1, cod_pessoa);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		rs.next();
+		
+		return rs.getString(1);
+		
+	}
+	
+	public void mudarCadastroFB(String cod_pessoa) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET cadastroFB = true WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1,cod_pessoa);
+		
+		ps.executeUpdate();
+		
+	}
+	
 }
 		
 		

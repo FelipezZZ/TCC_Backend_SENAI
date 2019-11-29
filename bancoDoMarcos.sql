@@ -24,7 +24,8 @@ create table anamnese(
 	constraint fkCod_pessoa foreign key (cod_pessoa) references pessoa(cod_pessoa),
 	a integer not null,
 	d integer not null,
-	s integer not null
+	s integer not null,
+	dataAnamnese date not null
 );
 
 create table admins(
