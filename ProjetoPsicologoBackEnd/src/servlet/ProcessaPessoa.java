@@ -65,6 +65,8 @@ public class ProcessaPessoa extends HttpServlet {
 		
 		//CADASTRAR PESSOA
 		if (acao.equals("cadastrarPessoa")) {
+			System.out.println("To no cadastra");
+			
 			Pessoa p = new Pessoa();
 			
 			String universidade = request.getParameter("universidade");
@@ -77,10 +79,20 @@ public class ProcessaPessoa extends HttpServlet {
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
 			String ScadastroFB = request.getParameter("cadastroFB");
 		
+			
+			System.out.println(universidade);
+			System.out.println(RA);
+			
+			System.out.println(nome);
+			System.out.println(email);
+			System.out.println(senha);
+			System.out.println(tipoPerf);
 			System.out.println("cadastroFB " + ScadastroFB);
 			
-			p.setUniversidade(universidade);
-			p.setRA(RA);
+			if(tipoPerf == 2) {
+				p.setUniversidade(universidade);
+				p.setRA(RA);
+			}
 			
 			p.setNome(nome);
 			p.setEmail(email);
@@ -96,7 +108,6 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	
 		}
 		
 		if(acao.equals("verificarTipoUsuario")) {
@@ -202,6 +213,10 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 		
+		}
+		
+		if(acao.equals("loginWeb")) {
+			System.out.println("ovo logar");
 		}
 		
 	}	
