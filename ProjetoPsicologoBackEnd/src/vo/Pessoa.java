@@ -13,6 +13,7 @@ public class Pessoa {
 	private String nome;
 	private String email;
 	private String senha;
+	private int sexo;
 	private int tipoPerf;
 	private boolean Verificado;
 	private boolean primeiroAcesso;
@@ -20,7 +21,7 @@ public class Pessoa {
 	private boolean cadastroFb;
 	
 	public Pessoa(int cod_pessoa, String universidade, String rA, String descricao, String nome, String email,
-			String senha, int tipoPerf, boolean verificado, boolean primeiroAcesso, Date dataCadastro, boolean cadastroFB) {
+			String senha, int sexo, int tipoPerf, boolean verificado, boolean primeiroAcesso, Date dataCadastro, boolean cadastroFB) {
 		
 	}
 
@@ -82,6 +83,14 @@ public class Pessoa {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public int getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(int sexo) {
+		this.sexo = sexo;
 	}
 
 	public int getTipoPerf() {

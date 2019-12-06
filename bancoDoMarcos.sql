@@ -12,6 +12,7 @@ create table pessoa(
 	nome varchar(50) not null,
 	email varchar(50) not null unique,
 	senha varchar(50)not null,
+	sexo integer not null,
 	tipoperfil integer not null ,
 	verificado boolean not null,
 	dataCadastro date not null,

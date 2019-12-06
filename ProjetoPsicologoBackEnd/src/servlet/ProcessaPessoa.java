@@ -76,6 +76,7 @@ public class ProcessaPessoa extends HttpServlet {
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
+			int sexo = Integer.valueOf(request.getParameter("sexo"));
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
 			String ScadastroFB = request.getParameter("cadastroFB");
 		
@@ -86,10 +87,11 @@ public class ProcessaPessoa extends HttpServlet {
 			System.out.println(nome);
 			System.out.println(email);
 			System.out.println(senha);
+			System.out.println(sexo);
 			System.out.println(tipoPerf);
 			System.out.println("cadastroFB " + ScadastroFB);
 			
-			if(tipoPerf == 2) {
+			if(tipoPerf == 1) {
 				p.setUniversidade(universidade);
 				p.setRA(RA);
 			}
@@ -97,6 +99,7 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setNome(nome);
 			p.setEmail(email);
 			p.setSenha(senha);
+			p.setSexo(sexo);
 			p.setTipoPerf(tipoPerf);
 			p.setCadastroFb(Boolean.parseBoolean(ScadastroFB));
 			
@@ -217,6 +220,34 @@ public class ProcessaPessoa extends HttpServlet {
 		
 		if(acao.equals("loginWeb")) {
 			System.out.println("ovo logar");
+			
+			Pessoa p = new Pessoa();
+			
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+			
+			System.out.println(email);
+			System.out.println(senha);
+			
+			p.setEmail(email);
+			p.setSenha(senha);
+			
+			try {
+				if(pDao.login(p)) {
+					System.out.println("logo1");
+					System.out.println(p.getEmail());
+					out.print(p.getEmail());
+				}else {
+					out.print("null");
+				}
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 		
 	}	
