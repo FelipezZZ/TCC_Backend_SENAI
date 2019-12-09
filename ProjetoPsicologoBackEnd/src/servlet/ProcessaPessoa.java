@@ -87,7 +87,7 @@ public class ProcessaPessoa extends HttpServlet {
 			System.out.println(nome);
 			System.out.println(email);
 			System.out.println(senha);
-			System.out.println(sexo);
+			System.out.println("sexo " + sexo);
 			System.out.println(tipoPerf);
 			System.out.println("cadastroFB " + ScadastroFB);
 			
