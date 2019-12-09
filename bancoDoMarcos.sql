@@ -35,6 +35,7 @@ create table admins(
 	senha varchar(50) not null
 );
 
+insert into admins values(0,"adm","123");
 
 /*
 create table universidades(

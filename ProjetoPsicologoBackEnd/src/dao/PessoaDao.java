@@ -227,6 +227,54 @@ public class PessoaDao {
 		return rs.next();
 	}
 	
+	public Boolean loginAdm(Pessoa p) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+		String sql = "SELECT * FROM admins WHERE login = ? AND senha = ?   ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setString(1,p.getEmail());
+		ps.setString(2, p.getSenha());
+		
+		ResultSet rs = ps.executeQuery();
+		
+		return rs.next();
+	}
+	
+	public List<Pessoa> listarNaoVerificados() throws SQLException{
+		
+		String sql = "SELECT * FROM pessoa WHERE tipoPerfil = '1' and verificado = '0' ";
+		
+		con = ConnectionDB.getConnection();
+		
+		ps = con.prepareStatement(sql);
+		
+		List<Pessoa> pessoas = new ArrayList<>();
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Pessoa p = new Pessoa();
+			p.setCod_pessoa(rs.getInt("cod_pessoa"));
+			p.setUniversidade(rs.getString("universidade"));
+			p.setRA(rs.getString("RA"));
+			p.setNome(rs.getString("nome"));
+			
+			pessoas.add(p);
+		}
+		
+		return pessoas;
+	}
+	
+	public boolean verificaPessoa(int i) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET verificado=true WHERE cod_pessoa = ?";
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setInt(1, i);
+
+		
+		return ps.executeUpdate() > 0;
+	}
+	
 }
 		
 		

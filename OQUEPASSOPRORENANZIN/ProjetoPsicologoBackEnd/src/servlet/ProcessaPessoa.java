@@ -316,9 +316,7 @@ public class ProcessaPessoa extends HttpServlet {
 				obj.put("status", erroSQL);
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			
+			}	
 		}
 			
 		if(acao.equals("logarPessoa")) {

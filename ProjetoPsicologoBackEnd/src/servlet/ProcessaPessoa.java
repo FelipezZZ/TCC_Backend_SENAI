@@ -215,7 +215,6 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
 		}
 		
 		if(acao.equals("loginWeb")) {
@@ -237,6 +236,10 @@ public class ProcessaPessoa extends HttpServlet {
 					System.out.println("logo1");
 					System.out.println(p.getEmail());
 					out.print(p.getEmail());
+				}else if(pDao.loginAdm(p)){
+					System.out.println("LOGO ADM");
+					System.out.println(p.getEmail());
+					out.print("adm");
 				}else {
 					out.print("null");
 				}
@@ -248,6 +251,44 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}
 			
+		}
+		
+		if(acao.equals("listarNaoVerificados")) {
+			v = 1;
+			System.out.println("tentou listar");
+			try {
+				List<Pessoa> listaPessoas = pDao.listarNaoVerificados();
+		
+				for (Pessoa p : listaPessoas) {
+					obj = new JSONObject();
+					obj.put("cod_pessoa", p.getCod_pessoa());
+					obj.put("universidade",p.getUniversidade());
+					obj.put("RA", p.getRA());
+					obj.put("nome", p.getNome());
+				
+					out.print(obj.toString()+"\n");
+				}
+			} catch (JSONException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		}
+		
+		if(acao.equals("verificaPessoa")) {
+			System.out.println("tentou verificar");
+			int i = Integer.parseInt(request.getParameter("cod_pessoaV"));
+			
+			try {
+				if(pDao.verificaPessoa(i)) {
+					obj.put("status", sucesso);
+				}else {
+					obj.put("status", falha);
+				}
+			} catch (SQLException e) {
+				obj.put("status", erroSQL);
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
 		}
 		
 	}	
