@@ -311,6 +311,35 @@ public class ProcessaPessoa extends HttpServlet {
 			}	
 		}
 		
+		if(acao.equals("pegarPessoa")) {
+			
+			String cod_pessoa = request.getParameter("codPessoa");
+			
+			try {
+				List<Pessoa> pessoa = pDao.pegarPessoa(cod_pessoa);
+				
+				System.out.println("lista " + pessoa);
+				
+				for(Pessoa p : pessoa){
+					obj = new JSONObject();
+					obj.put("email", p.getEmail());
+					obj.put("universidade",p.getUniversidade());
+					obj.put("RA", p.getRA());
+					obj.put("nome", p.getNome());
+					obj.put("descricao", p.getDescricao());
+				
+					System.out.println("obj " + obj);
+					
+					out.print(obj.toString());
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 		if(acao.equals("verificaPessoa")) {
 			System.out.println("tentou verificar");
 			int i = Integer.parseInt(request.getParameter("cod_pessoaV"));

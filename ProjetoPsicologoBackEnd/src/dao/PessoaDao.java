@@ -278,6 +278,34 @@ public class PessoaDao {
 		return pessoas;
 	}
 	
+	public List<Pessoa> pegarPessoa(String cod_pessoa) throws SQLException{
+		
+		String sql = "SELECT * FROM pessoa WHERE cod_pessoa = ? ";
+		
+		con = ConnectionDB.getConnection();
+		
+		ps = con.prepareStatement(sql);
+		ps.setString(1,cod_pessoa);
+		
+		List<Pessoa> pessoa = new ArrayList<>();
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Pessoa p = new Pessoa();
+			p.setCod_pessoa(rs.getInt("cod_pessoa"));
+			
+			p.setUniversidade(rs.getString("universidade"));
+			p.setRA(rs.getString("RA"));
+			p.setDescricao(rs.getString("descricao"));
+			
+			p.setNome(rs.getString("nome"));
+			p.setEmail(rs.getString("email"));
+			
+			pessoa.add(p);
+		}
+		
+		return pessoa;
+	}
+	
 	public boolean verificaPessoa(int i) throws SQLException {
 		
 		String sql = " UPDATE pessoa SET verificado=true WHERE cod_pessoa = ?";
