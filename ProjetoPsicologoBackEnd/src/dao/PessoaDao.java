@@ -209,7 +209,7 @@ public class PessoaDao {
 		
 	}
 	
-	public Boolean login(Pessoa p) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+	public int login(Pessoa p) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
 		String sql = "SELECT * FROM pessoa WHERE email = ? AND senha = ?   ";
 	
 		String senha = p.getSenha();
@@ -224,7 +224,22 @@ public class PessoaDao {
 		
 		ResultSet rs = ps.executeQuery();
 		
-		return rs.next();
+		return pegaChave(p.getEmail());
+	}
+	
+	public int pegarTipoPerf(String email) throws SQLException {
+		
+		String sql = "SELECT tipoperfil FROM pessoa WHERE email = ? ";
+	
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setString(1,email);
+		
+		ResultSet rs = ps.executeQuery();
+		
+		rs.next();
+		
+		return rs.getInt(1);
 	}
 	
 	public Boolean loginAdm(Pessoa p) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {

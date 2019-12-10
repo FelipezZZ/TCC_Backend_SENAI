@@ -60,7 +60,80 @@ public class ProcessaPessoa extends HttpServlet {
 		
 		String acao = request.getParameter("acao");
 		
-		//Gerenciamento de pessoas
+		//WEB
+		//CADASTRAR PESSOA
+		if (acao.equals("cadastrarPessoaWeb")) {
+			System.out.println("ovo cadastrar web");
+			
+			Pessoa p = new Pessoa();
+			
+			String universidade = request.getParameter("universidade");
+			String RA = request.getParameter("RA");
+			
+			
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+			int sexo = Integer.valueOf(request.getParameter("sexo"));
+			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
+			String ScadastroFB = request.getParameter("cadastroFB");
+			
+			if(tipoPerf == 1) {
+				p.setUniversidade(universidade);
+				p.setRA(RA);
+			}
+			
+			p.setNome(nome);
+			p.setEmail(email);
+			p.setSenha(senha);
+			p.setSexo(sexo);
+			p.setTipoPerf(tipoPerf);
+			p.setCadastroFb(Boolean.parseBoolean(ScadastroFB));
+			
+			try {
+				int cod_pessoa = pDao.cadastraPessoa(p);
+				obj.put("cod_pessoa", cod_pessoa);
+				obj.put("email", email);
+				obj.put("tipoPerf", tipoPerf);
+				out.print(obj);
+			} catch (InvalidKeyException | NoSuchAlgorithmException | IllegalBlockSizeException | BadPaddingException
+					| NoSuchPaddingException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		//WEB
+		//LOGIN WEB
+		if(acao.equals("loginWeb")) {
+			System.out.println("ovo logar");
+			
+			Pessoa p = new Pessoa();
+			
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+			
+			System.out.println(email);
+			System.out.println(senha);
+			
+			p.setEmail(email);
+			p.setSenha(senha);
+			
+			try {
+				int cod_pessoa = pDao.login(p);
+				int tipoPerf = pDao.pegarTipoPerf(email);
+				obj.put("cod_pessoa", cod_pessoa);
+				obj.put("email", email);
+				obj.put("tipoPerf", tipoPerf);
+				out.print(obj);
+			} catch (NoSuchAlgorithmException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 		
 		
 		//CADASTRAR PESSOA
@@ -215,42 +288,6 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-		if(acao.equals("loginWeb")) {
-			System.out.println("ovo logar");
-			
-			Pessoa p = new Pessoa();
-			
-			String email = request.getParameter("email");
-			String senha = request.getParameter("senha");
-			
-			System.out.println(email);
-			System.out.println(senha);
-			
-			p.setEmail(email);
-			p.setSenha(senha);
-			
-			try {
-				if(pDao.login(p)) {
-					System.out.println("logo1");
-					System.out.println(p.getEmail());
-					out.print(p.getEmail());
-				}else if(pDao.loginAdm(p)){
-					System.out.println("LOGO ADM");
-					System.out.println(p.getEmail());
-					out.print("adm");
-				}else {
-					out.print("null");
-				}
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 		}
 		
 		if(acao.equals("listarNaoVerificados")) {
