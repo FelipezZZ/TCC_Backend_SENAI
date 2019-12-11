@@ -242,13 +242,17 @@ public class PessoaDao {
 		return rs.getInt(1);
 	}
 	
-	public Boolean loginAdm(Pessoa p) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
-		String sql = "SELECT * FROM admins WHERE login = ? AND senha = ?   ";
+	public Boolean loginAdm(String login, String senha) throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException {
+		String sql = " SELECT * FROM admins WHERE login = ? AND senha = ? ";
 		
 		con = ConnectionDB.getConnection();
 		ps = con.prepareStatement(sql);
-		ps.setString(1,p.getEmail());
-		ps.setString(2, p.getSenha());
+		
+        MessageDigest algorithm = MessageDigest.getInstance("MD5");
+		byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+		
+		ps.setString(1, login);
+		ps.setBytes(2, messageDigestSenha);
 		
 		ResultSet rs = ps.executeQuery();
 		
@@ -316,6 +320,92 @@ public class PessoaDao {
 
 		
 		return ps.executeUpdate() > 0;
+	}
+	
+	public boolean editarNomeEmailWeb(Pessoa p) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET nome = ?, email = ? WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1, p.getNome());
+		ps.setString(2, p.getEmail());
+		ps.setInt(3, p.getCod_pessoa());
+		
+		return ps.executeUpdate() > 0;
+	}
+	
+	public boolean editarSenhaWeb(Pessoa p) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		
+		String sql = " UPDATE pessoa SET senha = ? WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		String senha = p.getSenha();
+		
+        MessageDigest algorithm = MessageDigest.getInstance("MD5");
+		byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+		
+		ps.setBytes(1, messageDigestSenha);
+		ps.setInt(2, p.getCod_pessoa());
+		
+		return ps.executeUpdate() > 0;
+	}
+	
+	public boolean editarUniversidadeWeb(Pessoa p) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET universidade = ? WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1, p.getUniversidade());
+		ps.setInt(2, p.getCod_pessoa());
+		
+		return ps.executeUpdate() > 0;
+	}
+	
+	public boolean editarRAWeb(Pessoa p) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET RA = ? WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1, p.getRA());
+		ps.setInt(2, p.getCod_pessoa());
+		
+		return ps.executeUpdate() > 0;
+	}
+	
+	public boolean editarDescricaoWeb(Pessoa p) throws SQLException {
+		
+		String sql = " UPDATE pessoa SET descricao = ? WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1, p.getDescricao());
+		ps.setInt(2, p.getCod_pessoa());
+		
+		return ps.executeUpdate() > 0;
+	}
+	
+	public void cadastraAdm(String login, String senha) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		
+		String sql = " insert into admins values(0,?,?) ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+        MessageDigest algorithm = MessageDigest.getInstance("MD5");
+		byte messageDigestSenha[] = algorithm.digest(senha.getBytes("UTF-8"));
+		
+		ps.setString(1, login);
+		ps.setBytes(2, messageDigestSenha);
+		ps.executeUpdate();
 	}
 	
 }

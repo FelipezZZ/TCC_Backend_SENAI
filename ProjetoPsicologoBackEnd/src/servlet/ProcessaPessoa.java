@@ -101,7 +101,37 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		
+		if(acao.equals("cadastrarADM")) {
 			
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			
+			try {
+				pDao.cadastraAdm(login, senha);
+			} catch (NoSuchAlgorithmException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(acao.equals("loginADM")) {
+			String login = request.getParameter("login");
+			String senha = request.getParameter("senha");
+			
+			try {
+				if(pDao.loginAdm(login, senha)) {
+					obj.put("msg", "logou");
+					out.print(obj);
+				}else {
+					obj.put("msg", "num logo");
+					out.print(obj);
+				}
+			} catch (NoSuchAlgorithmException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		//WEB
@@ -134,7 +164,118 @@ public class ProcessaPessoa extends HttpServlet {
 			
 		}
 		
+		//WEB
+		//EDITARNOMEEMAIL WEB
+		if (acao.equals("editarNomeEmailWeb")) {
+			System.out.println("ovo editar nome e email");
+			
+			Pessoa p = new Pessoa();
+			
+			String nome = request.getParameter("nome");
+			String email = request.getParameter("email");
+			Integer cod_pessoa = Integer.valueOf(request.getParameter("cod_pessoa"));
+			
+			p.setCod_pessoa(cod_pessoa);
+			p.setNome(nome);
+			p.setEmail(email);
+			
+			try {
+				if(pDao.editarNomeEmailWeb(p)) {
+					System.out.println("editou");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
+		if (acao.equals("editarSenhaWeb")) {
+			System.out.println("ovo editar senha");
+			
+			Pessoa p = new Pessoa();
+			
+			String senha = request.getParameter("senha");
+			Integer cod_pessoa = Integer.valueOf(request.getParameter("cod_pessoa"));
+			
+			p.setCod_pessoa(cod_pessoa);
+			p.setSenha(senha);
+			
+			try {
+				if(pDao.editarSenhaWeb(p)) {
+					System.out.println("editou senha");
+				}
+			} catch (NoSuchAlgorithmException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+		}
+		
+		if (acao.equals("editarUniversidadeWeb")) {
+			System.out.println("ovo editar universidade");
+			
+			Pessoa p = new Pessoa();
+			
+			String universidade = request.getParameter("universidade");
+			Integer cod_pessoa = Integer.valueOf(request.getParameter("cod_pessoa"));
+			
+			p.setCod_pessoa(cod_pessoa);
+			p.setUniversidade(universidade);
+			
+
+				try {
+					if(pDao.editarUniversidadeWeb(p)) {
+						System.out.println("editou universidade");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
+		if (acao.equals("editarRAWeb")) {
+			System.out.println("ovo editar RA");
+			
+			Pessoa p = new Pessoa();
+			
+			String RA = request.getParameter("RA");
+			Integer cod_pessoa = Integer.valueOf(request.getParameter("cod_pessoa"));
+			
+			p.setCod_pessoa(cod_pessoa);
+			p.setRA(RA);
+			
+
+				try {
+					if(pDao.editarRAWeb(p)) {
+						System.out.println("editou universidade");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
+		if (acao.equals("editarDescricaoWeb")) {
+			System.out.println("ovo editar descricao");
+			
+			Pessoa p = new Pessoa();
+			
+			String descricao = request.getParameter("descricao");
+			Integer cod_pessoa = Integer.valueOf(request.getParameter("cod_pessoa"));
+			
+			p.setCod_pessoa(cod_pessoa);
+			p.setDescricao(descricao);;
+			
+
+				try {
+					if(pDao.editarDescricaoWeb(p)) {
+						System.out.println("editou universidade");
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
 		
 		//CADASTRAR PESSOA
 		if (acao.equals("cadastrarPessoa")) {
@@ -313,12 +454,11 @@ public class ProcessaPessoa extends HttpServlet {
 		
 		if(acao.equals("pegarPessoa")) {
 			
-			String cod_pessoa = request.getParameter("codPessoa");
+			String cod_pessoa = request.getParameter("cod_pessoa");
+			System.out.println("servlet cod pessoa: " + cod_pessoa);
 			
 			try {
 				List<Pessoa> pessoa = pDao.pegarPessoa(cod_pessoa);
-				
-				System.out.println("lista " + pessoa);
 				
 				for(Pessoa p : pessoa){
 					obj = new JSONObject();
