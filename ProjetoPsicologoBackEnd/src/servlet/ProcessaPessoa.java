@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import dao.PessoaDao;
 import vo.Admin;
+import vo.Anamnese;
 import vo.Pessoa;
 
 @WebServlet("/ProcessaPessoa")
@@ -477,6 +478,31 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+		}
+		
+		if(acao.equals("listarAnamneses")) {
+			
+			String cod_pessoa = request.getParameter("cod_pessoa");
+			
+			try {
+				List<Anamnese> anameneses = pDao.listarAnamneses(cod_pessoa);
+				
+				for (Anamnese a : anameneses) {
+					obj = new JSONObject();
+					obj.put("cod_pessoa", a.getCod_pessoa());
+					obj.put("a", a.getAnsiedade());
+					obj.put("d", a.getDepressao());
+					obj.put("s", a.getEstresse());
+					obj.put("dataAnamnese", a.getDataAnamneses());
+				
+					out.print(obj.toString()+"\n");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 		}
 		

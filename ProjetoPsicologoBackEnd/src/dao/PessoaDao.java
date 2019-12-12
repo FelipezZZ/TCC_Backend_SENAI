@@ -22,6 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 import com.sun.xml.internal.ws.message.EmptyMessageImpl;
 
 import vo.Admin;
+import vo.Anamnese;
 import vo.Pessoa;
 
 public class PessoaDao {
@@ -282,6 +283,30 @@ public class PessoaDao {
 		return pessoas;
 	}
 	
+	public List<Anamnese> listarAnamneses(String cod_pessoa) throws SQLException{
+		
+		String sql = "SELECT * FROM anamnese WHERE cod_pessoa = ? ";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		ps.setString(1, cod_pessoa);
+		
+		List<Anamnese> anamneses = new ArrayList<>();
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){
+			Anamnese a = new Anamnese();
+			a.setCod_pessoa(rs.getInt("cod_pessoa"));
+			a.setAnsiedade(rs.getInt("a"));
+			a.setDepressao(rs.getInt("d"));
+			a.setEstresse(rs.getInt("s"));
+			a.setDataAnamneses(rs.getDate("dataAnamnese"));
+			
+			anamneses.add(a);
+		}
+		
+		return anamneses;
+	}
+	
 	public List<Pessoa> pegarPessoa(String cod_pessoa) throws SQLException{
 		
 		String sql = "SELECT * FROM pessoa WHERE cod_pessoa = ? ";
@@ -407,6 +432,8 @@ public class PessoaDao {
 		ps.setBytes(2, messageDigestSenha);
 		ps.executeUpdate();
 	}
+	
+	
 	
 }
 		

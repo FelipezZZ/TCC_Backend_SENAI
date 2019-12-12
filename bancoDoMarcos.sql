@@ -29,6 +29,8 @@ create table anamnese(
 	dataAnamnese date not null
 );
 
+insert into anamnese values(2, 15, 25, 35, now());
+
 create table admins(
 	cod_admin integer primary key auto_increment,
 	login varchar(50) not null unique,

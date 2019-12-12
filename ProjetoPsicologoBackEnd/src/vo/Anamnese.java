@@ -1,12 +1,15 @@
 package vo;
 
+import java.util.Date;
+
 public class Anamnese {
 	
 	private int cod_pessoa;
 	private int depressao;
 	private int ansiedade;
 	private int estresse;
-	private String comentario;
+	private Date dataAnamneses;
+	
 	public int getCod_pessoa() {
 		return cod_pessoa;
 	}
@@ -31,12 +34,13 @@ public class Anamnese {
 	public void setEstresse(int estresse) {
 		this.estresse = estresse;
 	}
-	public String getComentario() {
-		return comentario;
+	public Date getDataAnamneses() {
+		return dataAnamneses;
 	}
-	public void setComentario(String comentario) {
-		this.comentario = comentario;
+	public void setDataAnamneses(Date dataAnamneses) {
+		this.dataAnamneses = dataAnamneses;
 	}
+	
 	
 
 }
