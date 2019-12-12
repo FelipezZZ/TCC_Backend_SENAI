@@ -291,7 +291,7 @@ public class ProcessaPessoa extends HttpServlet {
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
 			String senha = request.getParameter("senha");
-			int sexo = Integer.valueOf(request.getParameter("sexo"));
+			//int sexo = Integer.valueOf(request.getParameter("sexo"));
 			int tipoPerf = Integer.valueOf(request.getParameter("tipoPerf"));
 			String ScadastroFB = request.getParameter("cadastroFB");
 		
@@ -302,7 +302,7 @@ public class ProcessaPessoa extends HttpServlet {
 			System.out.println(nome);
 			System.out.println(email);
 			System.out.println(senha);
-			System.out.println("sexo " + sexo);
+//			System.out.println("sexo " + sexo);
 			System.out.println(tipoPerf);
 			System.out.println("cadastroFB " + ScadastroFB);
 			
@@ -314,7 +314,7 @@ public class ProcessaPessoa extends HttpServlet {
 			p.setNome(nome);
 			p.setEmail(email);
 			p.setSenha(senha);
-			p.setSexo(sexo);
+//			p.setSexo(sexo);
 			p.setTipoPerf(tipoPerf);
 			p.setCadastroFb(Boolean.parseBoolean(ScadastroFB));
 			

@@ -29,7 +29,11 @@ create table anamnese(
 	dataAnamnese date not null
 );
 
-insert into anamnese values(2, 15, 25, 35, now());
+insert into anamnese values(4, 15, 25, 35, now());
+insert into anamnese values(4, 10, 25, 30, now());
+insert into anamnese values(4, 10, 20, 25, now());
+insert into anamnese values(4, 5, 10, 20, now());
+insert into anamnese values(4, 15, 25, 35, now());
 
 create table admins(
 	cod_admin integer primary key auto_increment,
