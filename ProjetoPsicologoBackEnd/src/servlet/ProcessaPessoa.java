@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import dao.HorarioDao;
 import dao.PessoaDao;
 import vo.Admin;
 import vo.Anamnese;
@@ -521,6 +522,39 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
+		}
+		
+		if(acao.equals("pesquisaEstagiario")) {
+			HorarioDao hDao = new HorarioDao();
+			
+			System.out.println("tou no pesquisa estagiario");
+			String dia = request.getParameter("dia");
+			String horario = request.getParameter("horario");
+			try {
+			
+			int f = 1;
+			
+				List<Integer>listaCodigos = hDao.pesquisaHorario(dia, horario);
+				
+				for(Integer i : listaCodigos) {
+					System.out.println(i);
+				obj = new JSONObject();
+				obj.put("cod_pessoa", i);
+				out.print(obj.toString()+"\n");
+				
+				System.out.println("conseguiu enviar os códigos");
+				}
+				
+					
+				
+				
+			} catch (Exception e) {
+				
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 		
 	}	
