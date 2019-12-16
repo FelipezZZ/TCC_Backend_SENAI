@@ -193,7 +193,11 @@ public class PessoaDao {
 		
 		rs.next();
 		
-		return rs.getString(1);
+		if(rs.next()) {
+			return rs.getString(1);
+		}else {
+			return "0";
+		}
 		
 	}
 	

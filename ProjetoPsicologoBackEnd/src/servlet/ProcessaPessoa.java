@@ -166,6 +166,31 @@ public class ProcessaPessoa extends HttpServlet {
 			
 		}
 		
+		if(acao.equals("verificaCadastroSQL")) {
+			
+			System.out.println("to no verificaCadastroSQL");
+			
+			String email = request.getParameter("email");
+			String senha = request.getParameter("senha");
+			
+			System.out.println(email + " " + senha);
+			
+			try {
+				int cod_pessoa = pDao.verificaCadastroSQL(email, senha);
+				String Scod_pessoa = String.valueOf(cod_pessoa);
+				String nome = pDao.pegarNome(Scod_pessoa);
+				if(cod_pessoa != 0) {
+					pDao.mudarCadastroFB(Scod_pessoa);
+				}
+				obj.put("cod_pessoa", cod_pessoa);
+				obj.put("nome", nome);
+				out.print(obj);
+			} catch (NoSuchAlgorithmException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		//WEB
 		//EDITARNOMEEMAIL WEB
 		if (acao.equals("editarNomeEmailWeb")) {
@@ -398,25 +423,6 @@ public class ProcessaPessoa extends HttpServlet {
 			
 		}
 		
-		if(acao.equals("verificaCadastroSQL")) {
-			
-			System.out.println("to no verificaCadastroSQL");
-			
-			String email = request.getParameter("email");
-			String senha = request.getParameter("senha");
-			
-			System.out.println(email + " " + senha);
-			
-			try {
-				int cod_pessoa = pDao.verificaCadastroSQL(email, senha);
-				System.out.println(cod_pessoa);
-				out.print(cod_pessoa);
-			} catch (NoSuchAlgorithmException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
 		if(acao.equals("pegarNome")) {
 			
 			System.out.println("to no pegarNome");
@@ -483,6 +489,7 @@ public class ProcessaPessoa extends HttpServlet {
 		}
 		
 		if(acao.equals("listarAnamneses")) {
+			System.out.println("to no listar anamnese");
 			
 			String cod_pessoa = request.getParameter("cod_pessoa");
 			
@@ -498,13 +505,12 @@ public class ProcessaPessoa extends HttpServlet {
 					obj.put("dataAnamnese", a.getDataAnamneses());
 				
 					out.print(obj.toString()+"\n");
+					System.out.println(obj.toString());
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			
+			}	
 		}
 		
 		if(acao.equals("verificaPessoa")) {
@@ -553,9 +559,9 @@ public class ProcessaPessoa extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
 		}
+		
+		
 		
 	}	
 }
