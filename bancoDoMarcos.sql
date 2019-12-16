@@ -57,6 +57,17 @@ insert into universidades values(0, "Universidade Teste 4");*/
 insert into pessoa values(0,null,null,null,"Caio","c@gmail.com","123456",2,false,now(),true,false);
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
 
+Create table horarios(
+cod_estagiario integer not null,
+constraint foreign key fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
+dom varchar(12),
+seg varchar(12),
+ter varchar(12),
+qua varchar(12),
+sex varchar(12),
+sab varchar(12)
+
+);
 
 
 --! UTILIZAR ESSAS TABELAS EM CASO DE SECÇÃO DO BANCO

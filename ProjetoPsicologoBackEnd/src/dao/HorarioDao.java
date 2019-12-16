@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.protocol.Resultset;
-
 public class HorarioDao {
 
 	private Connection con;
@@ -22,25 +20,26 @@ public class HorarioDao {
 		switch (dia) {
 
 		case "dom":
-			sql = "SELECT cod_estagiario FROM horarios WHERE dom = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.dom = ?";	
+		//	select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true	
 			break;
 		case "seg":
-			sql = "SELECT cod_estagiario FROM horarios WHERE seg = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.seg = ?";	
 			break;
 		case "ter":
-			sql = "SELECT cod_estagiario FROM horarios WHERE ter = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.ter = ?";	
 			break;
 		case "qua":
-			sql = "SELECT cod_estagiario FROM horarios WHERE qua = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.qua = ?";	
 			break;
 		case "qui":
-			sql = "SELECT cod_estagiario FROM horarios WHERE qui = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.quin = ?";	
 			break;
 		case "sex":
-			sql = "SELECT cod_estagiario FROM horarios WHERE sex = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.sex = ?";	
 			break;
 		case "sab":
-			sql = "SELECT cod_estagiario FROM horarios WHERE sab = ?";
+			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.sab = ?";	
 			break;
 
 		}
