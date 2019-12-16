@@ -190,9 +190,7 @@ public class PessoaDao {
 		ps.setString(1, cod_pessoa);
 		
 		ResultSet rs = ps.executeQuery();
-		
-		rs.next();
-		
+	
 		if(rs.next()) {
 			return rs.getString(1);
 		}else {
@@ -418,6 +416,20 @@ public class PessoaDao {
 		
 		ps.setString(1, p.getDescricao());
 		ps.setInt(2, p.getCod_pessoa());
+		
+		return ps.executeUpdate() > 0;
+	}
+	
+	public boolean codFBinSql(String codp, String codfb) throws SQLException {
+		System.out.println("to no update");
+		
+		String sql = " UPDATE pessoa SET cod_firebase = ? WHERE cod_pessoa = ?";
+		
+		con = ConnectionDB.getConnection();
+		ps = con.prepareStatement(sql);
+		
+		ps.setString(1, codfb);
+		ps.setString(2, codp);
 		
 		return ps.executeUpdate() > 0;
 	}
