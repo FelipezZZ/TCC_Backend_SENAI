@@ -55,9 +55,10 @@ public class HorarioDao {
 		while (rs.next()) {
 			codEstagiarios.add(rs.getInt(1));
 
-			return codEstagiarios;
+			
 
 		}
-
+		return codEstagiarios;
+		
 	}
 }
