@@ -574,6 +574,26 @@ public class ProcessaPessoa extends HttpServlet {
 				e.printStackTrace();
 			}			
 		}
+		if(acao.equals("salvarHorario")) {
+			HorarioDao hDao = new HorarioDao();
+			String dia = request.getParameter("dia");
+			String horario = request.getParameter("horario");
+			String codPessoa = request.getParameter("codPessoa");
+			
+			
+			
+			try {
+				if(hDao.SalvaHorario(codPessoa, horario, dia)) {
+					
+					obj.put("status", "funfou");
+				}else {
+					obj.put("status", "deu ruim pra krai");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 	}	

@@ -73,6 +73,7 @@ public class PessoaDao {
 		ps.setInt(6, p.getSexo());
 		ps.setInt(7, p.getTipoPerf());
 		ps.setBoolean(8, p.isCadastroFb());
+		System.out.println(ps.toString());
 		ps.executeUpdate();
 		
 		return pegaChave(p.getEmail()); 
@@ -170,7 +171,7 @@ public class PessoaDao {
 		
 		ps.setString(1, email);
 		ps.setBytes(2, messageDigestSenha);
-		
+		System.out.println(ps);
 		ResultSet rs = ps.executeQuery();
 		
 		if(rs.next()) {
