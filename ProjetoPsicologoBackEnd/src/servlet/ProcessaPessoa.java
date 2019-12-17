@@ -543,16 +543,14 @@ public class ProcessaPessoa extends HttpServlet {
 				List<Integer>listaCodigos = hDao.pesquisaHorario(dia, horario);
 				
 				for(Integer i : listaCodigos) {
-					System.out.println(i);
-				obj = new JSONObject();
-				obj.put("cod_pessoa", i);
-				out.print(obj.toString()+"\n");
-				
-				System.out.println("conseguiu enviar os códigos");
+					obj = new JSONObject();
+					obj.put("cod_pessoa", i);
+					out.print(obj.toString()+"\n");
+					System.out.println("conseguiu enviar os códigos");
 				}
 			} catch (Exception e) {
-				
 				// TODO Auto-generated catch block
+				System.out.println("não enviou códigos");
 				e.printStackTrace();
 			}
 		}
