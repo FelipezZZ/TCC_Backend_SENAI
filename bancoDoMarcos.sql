@@ -69,6 +69,8 @@ create table horarios(
 	sex varchar(12),
 	sab varchar(12)
 );
+INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('1', '1', 'Unip', '123', 'f', 'caio', 'c@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
+INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('2', '1', 'Unip', '123', 'f', 'leonidas', 'bugado@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
 INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('3', '1', 'Unip', '123', 'f', 'marcos', 'm@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
 INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('4', '1', 'Unip', '123', 'f', 'alberto', 'a@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
 INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('5', '1', 'Unip', '123', 'f', 'augusto', 'aug@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
