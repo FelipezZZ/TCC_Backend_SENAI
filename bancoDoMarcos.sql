@@ -58,7 +58,7 @@ insert into universidades values(0, "Universidade Teste 4");*/
 insert into pessoa values(0,null,null,null,"Caio","c@gmail.com","123456",2,false,now(),true,false);
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
 
-Create table horarios(
+create table horarios(
 	cod_estagiario integer not null,
 	constraint fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
 	dom varchar(12),
