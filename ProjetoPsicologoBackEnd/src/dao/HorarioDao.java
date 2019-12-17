@@ -53,10 +53,9 @@ public class HorarioDao {
 
 		while (rs.next()) {
 			codEstagiarios.add(rs.getInt(1));
-
-			
-
 		}
+		
+		System.out.println("lista" + codEstagiarios);
 		return codEstagiarios;
 		
 	}

@@ -4,7 +4,6 @@ use projeto;
 
 create table pessoa(
 	cod_pessoa integer primary key not null auto_increment,
-	
 	cod_firebase varchar(100),
 	
 	universidade varchar(50),
@@ -60,15 +59,15 @@ insert into pessoa values(0,null,null,null,"Caio","c@gmail.com","123456",2,false
 SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
 
 Create table horarios(
-cod_estagiario integer not null,
-constraint foreign key fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
-dom varchar(12),
-seg varchar(12),
-ter varchar(12),
-qua varchar(12),
-sex varchar(12),
-sab varchar(12)
-
+	cod_estagiario integer not null,
+	constraint fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
+	dom varchar(12),
+	seg varchar(12),
+	ter varchar(12),
+	qua varchar(12),
+	qui varchar(12),
+	sex varchar(12),
+	sab varchar(12)
 );
 
 
@@ -82,11 +81,10 @@ sab varchar(12)
 --registro date not null,
 --primeiroAcesso boolean not null,
 
-
 --);
 
-
-
+INSERT INTO horarios (cod_estagiario, dom, seg, ter, qua, qui, sex, sab) VALUES ('21', '12:00~~13:00', '13:00~~14:00', '15:00~~16:00', '13:00~~14:00', '13:00~~14:00', '13:00~~14:00', '13:00~~14:00');
+INSERT INTO horarios (cod_estagiario, dom, seg, ter, qua, qui, sex, sab) VALUES ('22', '12:00~~13:00', '13:00~~14:00', '15:00~~16:00', '13:00~~14:00', '13:00~~17:00', '13:00~~14:00', '13:00~~14:00');
 
 --create table funcionario(
 --cod_funcionario integer primary key auto_increment,
