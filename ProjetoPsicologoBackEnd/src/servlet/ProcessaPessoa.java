@@ -535,14 +535,17 @@ public class ProcessaPessoa extends HttpServlet {
 			
 			System.out.println("tou no pesquisa estagiario");
 			String dia = request.getParameter("dia");
+			
+			System.out.println("dia: " + dia);
+			
 			String horario = request.getParameter("horario");
 			try {
 			
 			int f = 1;
 			
-				List<Integer>listaCodigos = hDao.pesquisaHorario(dia, horario);
+				List<String>listaCodigos = hDao.pesquisaHorario(dia, horario);
 				
-				for(Integer i : listaCodigos) {
+				for(String i : listaCodigos) {
 					obj = new JSONObject();
 					obj.put("cod_pessoa", i);
 					out.print(obj.toString()+"\n");

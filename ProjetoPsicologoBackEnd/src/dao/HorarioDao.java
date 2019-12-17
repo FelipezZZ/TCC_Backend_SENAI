@@ -51,35 +51,35 @@ public class HorarioDao {
 	
 	}
 
-	public List<Integer> pesquisaHorario(String dia, String horario) throws SQLException {
+	public List<String> pesquisaHorario(String dia, String horario) throws SQLException {
 
-		List<Integer> codEstagiarios = new ArrayList<Integer>();
+		List<String> codEstagiarios = new ArrayList<String>();
 		con = ConnectionDB.getConnection();
 		String sql = "";
 		switch (dia) {
 
 		case "dom":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.dom = ?";
+			sql = "select h.cod_firebase, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.dom = ?";
 			// select h.cod_estagiario, h.dom from pessoa p inner join horarios h on
 			// p.cod_pessoa = h.cod_estagiario where verificado = true
 			break;
 		case "seg":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.seg = ?";
+			sql = "select h.cod_firebase, h.seg from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.seg = ?";
 			break;
 		case "ter":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.ter = ?";
+			sql = "select h.cod_firebase, h.ter from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.ter = ?";
 			break;
 		case "qua":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.qua = ?";
+			sql = "select h.cod_firebase, h.qua from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.qua = ?";
 			break;
 		case "qui":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.quin = ?";
+			sql = "select h.cod_firebase, h.qui from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.quin = ?";
 			break;
 		case "sex":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.sex = ?";
+			sql = "select h.cod_firebase, h.sex from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.sex = ?";
 			break;
 		case "sab":
-			sql = "select h.cod_estagiario, h.dom from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.sab = ?";
+			sql = "select h.cod_firebase, h.sab from pessoa p inner join horarios h on p.cod_pessoa = h.cod_estagiario where verificado = true and h.sab = ?";
 			break;
 
 		}
@@ -92,7 +92,7 @@ public class HorarioDao {
 		ResultSet rs = ps.executeQuery();
 
 		while (rs.next()) {
-			codEstagiarios.add(rs.getInt(1));
+			codEstagiarios.add(rs.getString(1));
 
 		}
 		
