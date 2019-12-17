@@ -59,7 +59,7 @@ SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
 
 Create table horarios(
 cod_estagiario integer not null,
-constraint foreign key fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
+constraint fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
 dom varchar(12),
 seg varchar(12),
 ter varchar(12),
