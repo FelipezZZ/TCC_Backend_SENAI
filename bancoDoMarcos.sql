@@ -5,6 +5,8 @@ use projeto;
 create table pessoa(
 	cod_pessoa integer primary key not null auto_increment,
 	
+	cod_firebase varchar(100),
+	
 	universidade varchar(50),
 	RA varchar (15),
 	descricao varchar(200),

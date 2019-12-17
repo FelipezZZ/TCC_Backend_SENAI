@@ -550,10 +550,6 @@ public class ProcessaPessoa extends HttpServlet {
 				
 				System.out.println("conseguiu enviar os códigos");
 				}
-				
-					
-				
-				
 			} catch (Exception e) {
 				
 				// TODO Auto-generated catch block
@@ -561,6 +557,23 @@ public class ProcessaPessoa extends HttpServlet {
 			}
 		}
 		
+		if(acao.equals("codFBinSql")) {
+			System.out.println("kkkk codFBinSql");
+			
+			String cod_pessoa = request.getParameter("cod_pessoa");
+			String cod_firebase = request.getParameter("cod_firebase");
+			
+			try {
+				if(pDao.codFBinSql(cod_pessoa, cod_firebase)) {
+					out.print("ok");
+				}else {
+					out.print("erro");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
 		
 		
 	}	
