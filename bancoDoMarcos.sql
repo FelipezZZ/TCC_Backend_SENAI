@@ -60,7 +60,7 @@ SELECT nickname FROM pessoa WHERE login = "jooj" AND senha = 123 ;
 
 create table horarios(
 	cod_estagiario integer not null,
-	constraint fkCod_pessoa foreign key(cod_estagiario) references pessoa(cod_pessoa),
+	constraint fkCod_pessoaH foreign key(cod_estagiario) references pessoa(cod_pessoa),
 	dom varchar(12),
 	seg varchar(12),
 	ter varchar(12),
@@ -69,8 +69,9 @@ create table horarios(
 	sex varchar(12),
 	sab varchar(12)
 );
-
-
+INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('3', '1', 'Unip', '123', 'f', 'marcos', 'm@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
+INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('4', '1', 'Unip', '123', 'f', 'alberto', 'a@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
+INSERT INTO `pessoa` (`cod_pessoa`, `cod_firebase`, `universidade`, `RA`, `descricao`, `nome`, `email`, `senha`, `sexo`, `tipoperfil`, `verificado`, `dataCadastro`, `primeiroAcesso`, `cadastroFB`) VALUES ('5', '1', 'Unip', '123', 'f', 'augusto', 'aug@gmail.com', '123456', '1', '1', '1', '2019-12-19', '1', '1');
 --! UTILIZAR ESSAS TABELAS EM CASO DE SECÇÃO DO BANCO
 
 --!create table paciente(
@@ -82,9 +83,9 @@ create table horarios(
 --primeiroAcesso boolean not null,
 
 --);
-
-INSERT INTO horarios (cod_estagiario, dom, seg, ter, qua, qui, sex, sab) VALUES ('21', '12:00~~13:00', '13:00~~14:00', '15:00~~16:00', '13:00~~14:00', '13:00~~14:00', '13:00~~14:00', '13:00~~14:00');
-INSERT INTO horarios (cod_estagiario, dom, seg, ter, qua, qui, sex, sab) VALUES ('22', '12:00~~13:00', '13:00~~14:00', '15:00~~16:00', '13:00~~14:00', '13:00~~17:00', '13:00~~14:00', '13:00~~14:00');
+insert into pessoa values(0,null,null,null,"Caio","c@gmail.com","123456",2,false,now(),true,false);
+INSERT INTO horarios (cod_estagiario, dom, seg, ter, qua, qui, sex, sab) VALUES ('1', '12:00~~13:00', '13:00~~14:00', '15:00~~16:00', '13:00~~14:00', '13:00~~14:00', '13:00~~14:00', '13:00~~14:00');
+INSERT INTO horarios (cod_estagiario, dom, seg, ter, qua, qui, sex, sab) VALUES ('2', '12:00~~13:00', '13:00~~14:00', '15:00~~16:00', '13:00~~14:00', '13:00~~17:00', '13:00~~14:00', '13:00~~14:00');
 
 --create table funcionario(
 --cod_funcionario integer primary key auto_increment,
